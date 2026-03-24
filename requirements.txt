@@ -1,0 +1,18 @@
+faster-whisper
+pyaudio
+torch 
+torchvision 
+torchaudio 
+--index-url https://download.pytorch.org/whl/cu121
+"oumi[gpu]"
+transformers 
+datasets 
+peft 
+accelerate 
+bitsandbytes
+kokoro
+sounddevice
+soundfile
+numpy
+scipy
+huggingface_hub
