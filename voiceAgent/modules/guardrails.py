@@ -35,10 +35,10 @@ class guardrailModule:
     
     def check_input(self,user_query:str)->str:
         label=self._classify(INPUT_PROMPT,user_query)
-        logger.info("Input guardrail - {label}")
+        logger.info(f"Input guardrail - {label}")
         return label
     
     def check_output(self,user_query:str)->str:
         label=self._classify(OUTPUT_PROMPT,user_query)
-        logger.info("Output guardrail = {label}")
+        logger.info(f"Output guardrail = {label}")
         return label
