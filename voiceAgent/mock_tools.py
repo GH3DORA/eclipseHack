@@ -45,5 +45,6 @@ TOOL_MAP={
     "check_refund_status" : check_refund_status,
     "update_email" : update_email,
     "escalate_to_human" : escalate_to_human,
+    "check_return_policy" : check_return_policy,
     "check_delivery_options" : check_delivery_options
 }
