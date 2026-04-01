@@ -13,7 +13,7 @@ Given the customer's query and a proposed action plan, verify:
 Respond with:
 VALID - if the plan is correct, then proceed further.
 INVALID : <one line reason> - if the plan has a problem.
-Be concise. One line only, give no explanation.
+Be concise. One line only.
 """
 
 class Verifier:
