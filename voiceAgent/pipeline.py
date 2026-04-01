@@ -21,7 +21,7 @@ FALLBACK_ESCALATE = ("I will be connecting you with a human agent now. Please wa
 FALLBACK_CLARIFY = ("Could you please give me some more detail about your query, so i could assist you better?")
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
 
-class voiceAgentPipeline:
+class VoiceAgentPipeline:
     def __init__(self):
         logger.info("Starting voice agent pipeline...")
         self.stt=STTModule()
