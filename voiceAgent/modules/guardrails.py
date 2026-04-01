@@ -21,7 +21,7 @@ Classify the agent's response into exactly one of these labels:
 Reply with ONE word only: VALID, INVALID, or UNSAFE.
 """
 
-class guardrailModule:
+class Guardrails:
     def __init__(self):
         self.mm=ModelManager.get_instance()
     
