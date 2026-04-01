@@ -4,7 +4,7 @@
 
 from loguru import logger
 from modules.stt import STTModule
-from voiceAgent.modules.guardrails import Guardrails
+from modules.guardrails import Guardrails
 from modules.query_rewriter import QueryRewriter
 from modules.routers import ExecutionRouter, ModelRouter, RetrievalRouter
 from modules.planner import Planner
