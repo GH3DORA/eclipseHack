@@ -1,4 +1,4 @@
-from model_manager import ModelManager
+from modules.model_manager import ModelManager
 from loguru import logger
 
 PROMPT="""
@@ -14,7 +14,7 @@ class QueryRewriter:
     
     def rewrite(self,text:str)->str:
         model,tokenizer=self.mm.load_small()
-        result=self.mm.generate(model,tokenizer,PROMPT,text,max_newToken=100)
+        result=self.mm.generate(model,tokenizer,PROMPT,text,max_new_tokens=100)
         cleaned=result.strip() if result.strip() else text
         logger.info(f"Cleaned up text --> {cleaned}")
         return cleaned

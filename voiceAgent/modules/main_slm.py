@@ -1,5 +1,5 @@
 # core generation model.
-from model_manager import ModelManager
+from modules.model_manager import ModelManager
 from loguru import logger
 
 PROMPT="""
@@ -29,6 +29,6 @@ class MainSLM:
         parts.append(f"Customer query : {query}")
         user_prompt="\n\n".join(parts)
         model,token=self.mm.load_large()
-        response=self.mm.generate(model,token,PROMPT,user_prompt,max_newToken=256)
+        response=self.mm.generate(model,token,PROMPT,user_prompt,max_new_tokens=256)
         logger.info(f"Main SLM response : {response[:80]}")
         return response

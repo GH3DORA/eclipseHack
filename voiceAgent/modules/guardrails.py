@@ -27,7 +27,7 @@ class Guardrails:
     
     def _classify(self,system_prompt:str,text:str)->str:
         model,tokenizer=self.mm.load_small()
-        raw=self.mm.generate(model,tokenizer,system_prompt,text,max_newToken=5)
+        raw=self.mm.generate(model,tokenizer,system_prompt,text,max_new_tokens=5)
         label=raw.strip().upper().split()[0] if raw.strip() else "VALID"
         if label not in {"VALID","INVALID","UNSAFE"}:
             label="VALID"

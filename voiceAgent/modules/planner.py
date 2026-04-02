@@ -32,7 +32,7 @@ class Planner:
         self.mm=ModelManager.get_instance()
     def plan(self,query:str)->list[str]:
         model,token=self.mm.load_large()
-        raw=self.mm.generate(model,token,PROMPT,query,max_newToken=256)
+        raw=self.mm.generate(model,token,PROMPT,query,max_new_tokens=256)
         steps=[]
         for line in raw.strip().splitlines():
             line=line.strip()

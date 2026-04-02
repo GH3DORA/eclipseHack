@@ -1,6 +1,6 @@
 # used to extract key features from converstations that might be useful in future for context
 
-from model_manager import ModelManager
+from modules.model_manager import ModelManager
 from loguru import logger
 from config import MAX_MEMORY_FACTS
 
@@ -21,7 +21,7 @@ class MemoryManager:
     def extract_and_store(self,user_query:str,agent_response:str):
         model,token=self.mm.load_small()
         conversation=f"\n User prompt : {user_query} \n Agent response={agent_response}"
-        raw=self.mm.generate(model,token,PROMPT,conversation,max_newToken=128)
+        raw=self.mm.generate(model,token,PROMPT,conversation,max_new_tokens=128)
         if raw.strip().upper()==None:
             return
         for line in raw.strip().splitlines():
@@ -31,7 +31,7 @@ class MemoryManager:
                 value=value.strip()
                 if key and value :
                     self.memory[key]=value
-                    if len(self.memory>MAX_MEMORY_FACTS):
+                    if len(self.memory)>MAX_MEMORY_FACTS:
                         oldest=next(iter(self.memory))
                         del self.memory[oldest]
         logger.info(f"Memory : {self.memory}")

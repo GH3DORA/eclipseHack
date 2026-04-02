@@ -20,7 +20,7 @@ class ModelManager:
         self.large_model=None
         self.large_tokenizer=None
         self.device="cuda" if torch.cuda.is_available() else "cpu"
-        logger.info("ModelManager initialised - device is {self.device}")
+        logger.info(f"ModelManager initialised - device is {self.device}")
 
     # lazy loaders, only loaded when needed.
     def load_small(self): #load small qwen model for smaller tasks
@@ -50,7 +50,7 @@ class ModelManager:
         return self.large_model,self.large_tokenizer
     
     #shared inference used by every model
-    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_newToken:int=256,)->str:
+    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,)->str:
         messages=[
             {"role":"system","content":system_prompt},
             {"role":"user","content":user_prompt}
@@ -63,7 +63,7 @@ class ModelManager:
         with torch.no_grad():
             outputs=model.generate(
                 **inputs,
-                max_newToken=max_newToken,
+                max_new_tokens=max_new_tokens,
                 do_sample=False,
                 pad_token_id=tokenizer.eos_token_id
             )

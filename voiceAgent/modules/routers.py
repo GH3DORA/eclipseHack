@@ -3,7 +3,7 @@
 # MODEL - determines model selection. simple for fast, complex for full SLM
 # RETRIEVAL - querying mock databases to get data source for order, refund, policy, account details etc.
 
-from model_manager import ModelManager  
+from modules.model_manager import ModelManager  
 from loguru import logger
 
 # system prompts
@@ -45,7 +45,7 @@ class ExecutionRouter:
 
     def route(self,query:str)->str:
         model,token=self.mm.load_small()
-        raw=self.mm.generate(model,token,EXECUTION_PROMPT,query,max_newToken=5)
+        raw=self.mm.generate(model,token,EXECUTION_PROMPT,query,max_new_tokens=5)
         label=raw.strip().upper().split()[0] if raw.strip() else "ANSWER"
         if label not in self.VALID:
             label="ANSWER"
@@ -58,7 +58,7 @@ class ModelRouter:
     VALID={"SIMPLE","COMPLEX"}
     def route(self,query:str)->str:
         model,token=self.mm.load_small()
-        raw=self.mm.generate(model,token,MODEL_PROMPT, query, max_newToken=5)
+        raw=self.mm.generate(model,token,MODEL_PROMPT, query, max_new_tokens=5)
         label=raw.strip().upper().split()[0] if raw.strip() else "SIMPLE"
         if label not in self.VALID:
             label="SIMPLE"
@@ -71,7 +71,7 @@ class RetrievalRouter:
     VALID={"ORDER_DB","REFUND_DB","POLICY_DOCS","ACCOUNT_DB"}
     def route(self,query:str)->str:
         model,token=self.mm.load_small()
-        raw=self.mm.generate(model,token,RETRIEVAL_PROMPT,query, max_newToken=5)
+        raw=self.mm.generate(model,token,RETRIEVAL_PROMPT,query, max_new_tokens=5)
         label=raw.strip().upper().split()[0] if raw.strip() else "POLICY_DOCS"
         if label not in self.VALID:
             label="POLICY_DOCS"
