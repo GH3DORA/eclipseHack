@@ -19,7 +19,8 @@ class MainSLM:
     def __init__(self):
         self.mm=ModelManager.get_instance()
 
-    def generate(self,query:str,memory_context:str="",tool_results:list[str] | None=None)->str:
+    def generate(self,query:str,memory_context:str="",tool_results:list[str] | None=None, system_override:str | None=None)->str:
+        system_prompt=system_override if system_override else PROMPT
         parts=[]
         if memory_context:
             parts.append(memory_context)

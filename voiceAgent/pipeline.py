@@ -20,6 +20,7 @@ FALLBACK_UNSAFE =  ("I'm sorry, I cannot help with that. Please ask customer sup
 FALLBACK_ESCALATE = ("I will be connecting you with a human agent now. Please wait for a moment.")
 FALLBACK_CLARIFY = ("Could you please give me some more detail about your query, so i could assist you better?")
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
+SYSTEM_OVERRIDE = ("You are a customer support agent. The customer has sent a casual social message - a greeting, thanks, or farewell. Reply warmly and naturally in one short sentence. Do not ask any follow up questions unless it feels natural.")
 
 class VoiceAgentPipeline:
     def __init__(self):
@@ -53,7 +54,9 @@ class VoiceAgentPipeline:
         response:str=""
 
         #route based branching
-        if exec_route=="CLARIFY":
+        if exec_route=="CHITCHAT":
+            response=self.main_slm.generate(clean_query,memory_context,system_override=SYSTEM_OVERRIDE)
+        elif exec_route=="CLARIFY":
             response=FALLBACK_CLARIFY
         elif exec_route=="ESCALATE":
             response=FALLBACK_ESCALATE

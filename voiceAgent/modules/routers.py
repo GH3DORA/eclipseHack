@@ -10,6 +10,7 @@ from loguru import logger
 EXECUTION_PROMPT="""
 You are a routing agent for a customer support system.
 Given the user query, choose the best action:
+CHITCHAT - greeting, thanks, farewell or a casual social message.
 ANSWER — query can be answered directly without any tool or multi-step plan.
 PLAN — query requires multiple ordered steps (e.g. "cancel my order AND update my email").
 SEARCH — query requires looking up specific live data (e.g. order status, refund status).
@@ -39,7 +40,7 @@ Reply with ONE word only: ORDER_DB, REFUND_DB, POLICY_DOCS, or ACCOUNT_DB.
 # ROUTER CLASSES
 
 class ExecutionRouter:
-    VALID={"ANSWER","PLAN","SEARCH","CLARIFY","ESCALATE"}
+    VALID={"CHITCHAT","ANSWER","PLAN","SEARCH","CLARIFY","ESCALATE"}
     def __init__(self):
         self.mm=ModelManager.get_instance()
 
