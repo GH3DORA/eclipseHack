@@ -93,6 +93,7 @@ class VoiceAgentPipeline:
                 user_text=self.stt.listen()
                 if not user_text.strip():
                     print("No voice recorded, try again.")
+                    continue
                 response=self.process(user_text)
                 self.tts.speak(response)
             except KeyboardInterrupt:
