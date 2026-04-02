@@ -25,8 +25,8 @@ class Verifier:
         model,token=self.mm.load_small()
         plan_text="\n".join(plan)
         user_input=f"Customer query : {query} \n Plan : \n {plan_text}"
-        raw=self.mm.generate(model,token,PROMPT,user_input,max_newToken=64)
+        raw=self.mm.generate(model,token,PROMPT,user_input,max_new_tokens=64)
         is_valid=raw.strip().upper().startswith("VALID")
-        logger.info(f"Verifier : {"VALID" if is_valid else "INVALID"} | {raw.strip()}")
+        logger.info(f"Verifier : {'VALID' if is_valid else 'INVALID'} | {raw.strip()}")
         return is_valid,raw.strip()
     
