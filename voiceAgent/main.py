@@ -1,4 +1,4 @@
-# main.py -> entry point for SLM
+# main.py -> entry point for medical voice agent
 # for voice mode, run --  python main.py  --
 # for text mode, run --  python main.py --text  --
 

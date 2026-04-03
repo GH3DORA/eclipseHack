@@ -7,21 +7,20 @@ from modules.model_manager import ModelManager
 from mock_tools import TOOL_MAP
 
 PROMPT="""
-You are an executor agent for a customer support system. Convert the given plan step into a JSON call : 
-Available tools : 
-check_order_status - params: {"order_id":"string}
-cancel_order - params: {"order_id":"string"}
-check_refund_status - params: {"order_id":"string"}
-update_email - params: {"new_email":"string"}
-escalate_to_human - params: {}
-check_return_policy - params: {}
-check_delivery_options - params: {}
+You are an executor agent for a medical support system. Convert the given plan step into a JSON call.
+Available tools:
+check_patient_record - params: {"patient_id":"string"}
+check_appointment - params: {"patient_id":"string"}
+check_medication_info - params: {"medication":"string"}
+check_symptoms - params: {"symptom":"string"}
+escalate_to_doctor - params: {}
+check_emergency_guidance - params: {}
 answer_directly - params: {"response":"your answer"}
 
 Return only a valid JSON response, nothing else.
 {"tool":"<tool_name>","params":{<params>}}
 
-If no order ID or email is mentioned, use an empty string value.
+If no patient ID or medication name is mentioned, use an empty string value.
 """
 
 class Executor:

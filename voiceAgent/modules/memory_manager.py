@@ -1,13 +1,14 @@
-# used to extract key features from converstations that might be useful in future for context
+# used to extract key details from conversations for future context
 
 from modules.model_manager import ModelManager
 from loguru import logger
 from config import MAX_MEMORY_FACTS
 
 PROMPT="""
-You are a memory extraction agent for a customer support system.
-Read the conversation turn below and extract any facts that would be useful in future turns.
-Focus on: customer name, order IDs, email addresses, issue type, product names, preferences. 
+You are a memory extraction agent for a personal health assistant.
+Read the conversation turn below and extract any facts useful in future turns.
+Focus on: user's name, age, gender, symptoms described, duration of symptoms, severity,
+known conditions, current medications, allergies, lifestyle details (smoker, diet, exercise).
 Format each fact as - 
 key: value
 ONLY one fact per line. If no useful facts are found, reply with: NONE
@@ -41,7 +42,7 @@ class MemoryManager:
         if not self.memory:
             return ""
         lines="\n".join(f"{k} : {v}" for k,v in self.memory.items())
-        return f"Known facts about this customer : {lines}"
+        return f"Known facts about this user:\n{lines}"
     
     def clear(self):
         self.memory.clear()

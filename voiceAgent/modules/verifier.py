@@ -4,11 +4,12 @@ from modules.model_manager import ModelManager
 from loguru import logger
 
 PROMPT="""
-You are a plan verifier for a customer support system.
-Given the customer's query and a proposed action plan, verify:
+You are a plan verifier for a medical support system.
+Given the patient's query and a proposed action plan, verify:
 1. Steps are in a logical order
 2. No steps conflict with each other
-3. The plan actually addresses the query
+3. The plan actually addresses the patient's concern
+4. Emergency steps (escalate_to_doctor) come first if the situation is urgent
  
 Respond with:
 VALID - if the plan is correct, then proceed further.
@@ -24,7 +25,7 @@ class Verifier:
     def verify(self,query:str,plan:list[str])->tuple[bool,str]:
         model,token=self.mm.load_small()
         plan_text="\n".join(plan)
-        user_input=f"Customer query : {query} \n Plan : \n {plan_text}"
+        user_input=f"Patient query : {query} \n Plan : \n {plan_text}"
         raw=self.mm.generate(model,token,PROMPT,user_input,max_new_tokens=64)
         is_valid=raw.strip().upper().startswith("VALID")
         logger.info(f"Verifier : {'VALID' if is_valid else 'INVALID'} | {raw.strip()}")

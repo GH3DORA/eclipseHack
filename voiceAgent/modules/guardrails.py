@@ -2,21 +2,24 @@ from modules.model_manager import ModelManager
 from loguru import logger
 
 INPUT_PROMPT="""
-You are a safety classifier for a customer support voice agent.
-Classify the user message into exactly one of these labels:
-  VALID   — a legitimate customer support question
-  INVALID — off-topic, gibberish, or not related to customer support
-  UNSAFE  — abusive, harmful, or inappropriate content
+You are a safety classifier for a personal health voice assistant.
+Classify the user's message into exactly one of these labels:
+  VALID   — a health question, symptom description, greeting, farewell, or any message needing a response
+  INVALID — complete gibberish, random characters, or clearly not human input
+  UNSAFE  — abusive, hateful, or trying to misuse the system
+
+IMPORTANT: Any health-related message is VALID, even sensitive topics.
+Mentions of self-harm or suicidal thoughts are VALID — the person needs help.
  
 Reply with ONE word only: VALID, INVALID, or UNSAFE.
 """
 
 OUTPUT_PROMPT="""
-You are a safety classifier for a customer support voice agent.
-Classify the agent's response into exactly one of these labels:
-  VALID   — appropriate, helpful, and safe
-  INVALID — does not address the customer's query
-  UNSAFE  — contains harmful or inappropriate content
+You are a safety classifier for a personal health voice assistant.
+Classify the assistant's response into exactly one of these labels:
+  VALID   — helpful, medically responsible, includes appropriate disclaimers
+  INVALID — does not address the user's health concern at all
+  UNSAFE  — gives dangerous advice, prescribes specific drugs without disclaimers, or could cause harm
  
 Reply with ONE word only: VALID, INVALID, or UNSAFE.
 """

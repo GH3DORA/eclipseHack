@@ -1,0 +1,35 @@
+[2026-04-03 10:44:13,924][oumi][rank0][pid:10844][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:44:17,213][oumi][rank0][pid:10844][MainThread][WARNING]][models.py:454] Undefined pad token. Setting it to `<|finetune_right_pad_id|>`.
+[2026-04-03 10:44:17,216][oumi][rank0][pid:10844][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'meta-llama/Llama-3.2-3B-Instruct'.
+[2026-04-03 10:46:22,727][oumi][rank0][pid:34252][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:46:25,380][oumi][rank0][pid:34252][MainThread][WARNING]][models.py:454] Undefined pad token. Setting it to `<|finetune_right_pad_id|>`.
+[2026-04-03 10:46:25,385][oumi][rank0][pid:34252][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'meta-llama/Llama-3.2-3B-Instruct'.
+[2026-04-03 10:46:27,124][oumi][rank0][pid:34252][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 10:46:27,482][oumi][rank0][pid:34252][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 10:46:39,676][oumi][rank0][pid:34252][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 10:46:43,802][oumi][rank0][pid:34252][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 10:46:56,453][oumi][rank0][pid:34252][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 10:46:56,454][oumi][rank0][pid:34252][MainThread][INFO]][train.py:564] Training init time: 33.769s
+[2026-04-03 10:46:56,457][oumi][rank0][pid:34252][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 10:49:25,096][oumi][rank0][pid:42256][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:49:27,199][oumi][rank0][pid:42256][MainThread][WARNING]][models.py:454] Undefined pad token. Setting it to `<|finetune_right_pad_id|>`.
+[2026-04-03 10:49:27,202][oumi][rank0][pid:42256][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'meta-llama/Llama-3.2-3B-Instruct'.
+[2026-04-03 10:49:29,012][oumi][rank0][pid:42256][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 10:49:29,508][oumi][rank0][pid:42256][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 10:50:41,900][oumi][rank0][pid:31896][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:50:45,085][oumi][rank0][pid:31896][MainThread][WARNING]][models.py:454] Undefined pad token. Setting it to `<|finetune_right_pad_id|>`.
+[2026-04-03 10:50:45,089][oumi][rank0][pid:31896][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'meta-llama/Llama-3.2-3B-Instruct'.
+[2026-04-03 10:50:46,659][oumi][rank0][pid:31896][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 10:50:47,074][oumi][rank0][pid:31896][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'meta-llama/Llama-3.2-3B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 10:50:47,077][oumi][rank0][pid:31896][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 10:54:38,816][oumi][rank0][pid:19720][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:56:33,618][oumi][rank0][pid:34336][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 10:56:38,810][oumi][rank0][pid:34336][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 10:56:40,641][oumi][rank0][pid:34336][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 10:56:41,245][oumi][rank0][pid:34336][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 10:56:41,247][oumi][rank0][pid:34336][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 10:56:54,644][oumi][rank0][pid:34336][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 10:56:55,397][oumi][rank0][pid:34336][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 10:57:08,916][oumi][rank0][pid:34336][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 10:57:08,917][oumi][rank0][pid:34336][MainThread][INFO]][train.py:564] Training init time: 35.344s
+[2026-04-03 10:57:08,921][oumi][rank0][pid:34336][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
