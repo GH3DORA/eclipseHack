@@ -34,7 +34,7 @@ def checkGPU():
     else:
         name=torch.cuda.get_device_name(0)
         vram=torch.cuda.get_device_properties(0).total_memory / 1e9
-        logger.info(f"GPU Detected - {name} with {vram} VRAM.")
+        logger.info(f"GPU Detected - {name} with {vram}GB VRAM.")
 
 def checkOumi():
     try:
@@ -71,17 +71,18 @@ def nextSteps():
     print("""
 1. Open config.py and update the model paths:
  
-     SMALL_MODEL_NAME = "./models/small-slm"
-     LARGE_MODEL_NAME = "./models/main-slm"
+     SMALLMODEL = "./models/small-slm"
+     LARGEMODEL = "./models/main-slm"
  
 2. Run the agent in text mode to test:
  
      python main.py --text
  
 3. Try queries like:
-     - "Where is my order 12345?"
-     - "Cancel my order and give me a refund"
-     - "What is your return policy?"
+     - "I have a headache and feel dizzy"
+     - "My stomach has been hurting for 3 days"
+     - "I'm really scared, my chest hurts"
+     - "What should I do if I have a fever?"
 """)
     
 if __name__ == "__main__":

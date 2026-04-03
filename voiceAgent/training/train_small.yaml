@@ -1,8 +1,8 @@
 # training/train_small.yaml
 #
-# Fine-tunes Qwen2.5-0.5B-Instruct on the same dataset.
+# Fine-tunes Qwen2.5-0.5B-Instruct on HealthCareMagic-100k.
 # This model powers all classifier modules:
-#   guardrails, query rewriter, routers, verifier, memory, executor.
+#   guardrails, emotion analyzer, query rewriter, routers, verifier, memory, executor.
 #
 # Smaller model = faster training, lighter VRAM footprint.
 #

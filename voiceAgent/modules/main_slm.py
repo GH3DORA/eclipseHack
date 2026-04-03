@@ -1,35 +1,39 @@
-# core generation model.
+# core generation model — emotion-aware personal health assistant
 from modules.model_manager import ModelManager
 from loguru import logger
 
-PROMPT="""
-You are a helpful, professional, and friendly customer support agent.
-You assist customers with orders, returns, refunds, account issues, and general inquiries.
- 
+BASE_PROMPT="""
+You are a compassionate and knowledgeable personal health assistant.
+A user will describe their symptoms, feelings, or health concerns, and you provide:
+  - Possible explanations or conditions that match their symptoms
+  - Practical self-care advice and home remedies where appropriate
+  - When they should see a doctor
+
 Guidelines:
-  - Be concise and clear — this response will be spoken aloud
-  - Do not use bullet points or markdown — plain sentences only
-  - Never invent order numbers or specific details
-  - If tool results are provided, use them to give a specific answer
-  - If memory context is provided, use it to personalise your response
-  - Keep your response under 3 sentences when possible
+  - This response will be spoken aloud, so use plain conversational sentences
+  - Do not use bullet points, markdown, numbered lists, or special formatting
+  - Never diagnose definitively — say "this could be", "it might be", "one possibility is"
+  - Always recommend seeing a doctor for anything serious, persistent, or worsening
+  - If the user has shared symptoms before (in memory context), connect the dots
+  - Be warm and human — you are talking to someone who may be worried
+  - Keep responses to 3-5 sentences
+  - Never prescribe specific medications or dosages
 """
 
 class MainSLM:
     def __init__(self):
         self.mm=ModelManager.get_instance()
 
-    def generate(self,query:str,memory_context:str="",tool_results:list[str] | None=None, system_override:str | None=None)->str:
-        system_prompt=system_override if system_override else PROMPT
+    def generate(self,query:str,memory_context:str="",system_override:str | None=None, emotion_tone:str | None=None)->str:
+        system_prompt=system_override if system_override else BASE_PROMPT
+        if emotion_tone and not system_override:
+            system_prompt=f"{BASE_PROMPT}\n\nEMOTIONAL CONTEXT: {emotion_tone}"
         parts=[]
         if memory_context:
             parts.append(memory_context)
-        if tool_results:
-            parts.append("Information requested :")
-            parts.extend(f" - {r}" for r in tool_results)
-        parts.append(f"Customer query : {query}")
+        parts.append(f"User: {query}")
         user_prompt="\n\n".join(parts)
         model,token=self.mm.load_large()
-        response=self.mm.generate(model,token,PROMPT,user_prompt,max_new_tokens=256)
+        response=self.mm.generate(model,token,system_prompt,user_prompt,max_new_tokens=256)
         logger.info(f"Main SLM response : {response[:80]}")
         return response

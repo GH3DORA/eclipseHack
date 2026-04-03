@@ -1,7 +1,7 @@
 # training/train_large.yaml
 #
-# Fine-tunes Qwen2.5-1.5B-Instruct on the Bitext customer support dataset.
-# This is the main SLM — the one that generates final responses.
+# Fine-tunes Qwen2.5-1.5B-Instruct on HealthCareMagic-100k.
+# This is the main SLM — the one that generates final emotion-aware medical responses.
 #
 # Run with:
 #   oumi train -c training/train_large.yaml
@@ -31,7 +31,7 @@ data:
 training:
   trainer_type: TRL_SFT
   use_peft: true
-  output_dir: "./models/small-slm"
+  output_dir: "./models/main-slm"
   num_train_epochs: 3
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 1
