@@ -1,6 +1,6 @@
 # training/train_large.yaml
 #
-# Fine-tunes Mistral-7B-Instruct-v0.3 on ai-medical-chatbot (256k dialogues).
+# Fine-tunes Qwen2.5-3B-Instruct on ai-medical-chatbot.
 # This is the main SLM — the one that generates final emotion-aware medical responses.
 #
 # Run with:

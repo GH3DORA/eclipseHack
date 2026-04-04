@@ -24,7 +24,7 @@ class STTModule:
         sd.wait()
         return audio
     
-    def transcribe(self,audio:np.ndarray)->str:
+    def transcribe(self,audio)->str:
         segments,_=self.model.transcribe(audio,"en")
         text=" ".join(seg.text for seg in segments).strip()
         logger.info(f"STT --> {text}")

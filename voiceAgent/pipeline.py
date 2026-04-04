@@ -1,6 +1,6 @@
 # pipeline.py
 # used to chain all modules together
-# STT -> INPUT GUARDRAILS -> EMOTION ANALYSIS -> QUERY REWRITER -> RAG -> MAIN SLM -> OUTPUT GUARDRAILS -> MEMORY MANAGER -> TTS
+# STT -> EMOTION CLASSIFIER -> QUERY REWRITER -> RAG -> MAIN SLM -> MEMORY MANAGER -> TTS
 
 from loguru import logger
 from modules.stt import STTModule
@@ -40,7 +40,6 @@ class VoiceAgentPipeline:
         clean_query=self.rewriter.rewrite(user_text)
         memory_context=self.memory_manager.get_context(user_id)
 
-        # retrieve relevant medical context via RAG
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
 
