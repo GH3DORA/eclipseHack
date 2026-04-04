@@ -16,7 +16,7 @@ EVAL_FILE=OUTPUT_DIR/"test.jsonl"
 GUARDRAIL_TRAIN_FILE=OUTPUT_DIR/"guardrail_train.jsonl"
 GUARDRAIL_EVAL_FILE=OUTPUT_DIR/"guardrail_test.jsonl"
 EVAL_SIZE=1000
-MAX_TRAIN=20_000
+MAX_TRAIN=50000
 SYSTEM_PROMPT="""
 You are a compassionate and knowledgeable medical support assistant.
 You help patients understand their symptoms, conditions, medications, and general health concerns.

@@ -4,9 +4,9 @@ import os
 
 os.makedirs("./data", exist_ok=True)
 
-print("Downloading ChatDoctor dataset...")
+print("Downloading ai-medical-chatbot dataset...")
 dataset = load_dataset(
-    "lavita/ChatDoctor-HealthCareMagic-100k",
+    "ruslanmv/ai-medical-chatbot",
     split="train"
 )
 

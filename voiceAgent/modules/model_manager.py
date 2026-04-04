@@ -74,9 +74,11 @@ class ModelManager:
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
                 bnb_4bit_use_double_quant=True,
-                bnb_4bit_compute_dtype=torch.float16,
+                bnb_4bit_compute_dtype=torch.bfloat16,
             )
             self.large_tokenizer=AutoTokenizer.from_pretrained(LARGEMODEL)
+            if self.large_tokenizer.pad_token is None:
+                self.large_tokenizer.pad_token=self.large_tokenizer.eos_token
             self.large_model=AutoModelForCausalLM.from_pretrained(
                 LARGEMODEL,
                 quantization_config=bnb_config,
