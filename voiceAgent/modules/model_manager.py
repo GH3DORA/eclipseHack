@@ -70,7 +70,7 @@ class ModelManager:
     def load_large(self):
         if self.large_model is None:
             torch.cuda.empty_cache()
-            logger.info("Loading large model on GPU (4-bit)...")
+            logger.info("Loading base model + LoRA adapter on GPU (4-bit)...")
             bnb=BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
@@ -85,7 +85,7 @@ class ModelManager:
             )
             self.large_model = PeftModel.from_pretrained(base_model, LARGEMODEL)
             self.large_model.eval()
-            logger.info("Large model ready (GPU, 4-bit).")
+            logger.info("Large model ready (GPU, 4-bit + LoRA).")
         return self.large_model, self.large_tokenizer
     
     #shared inference used by every model

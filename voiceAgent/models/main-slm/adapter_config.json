@@ -30,10 +30,10 @@
   "revision": null,
   "target_modules": [
     "o_proj",
-    "up_proj",
-    "down_proj",
     "v_proj",
+    "up_proj",
     "k_proj",
+    "down_proj",
     "q_proj",
     "gate_proj"
   ],

@@ -119,9 +119,10 @@ def preload_models():
     from modules.model_manager import ModelManager
     mm = ModelManager.get_instance()
     mm.load_small()
-    mm.load_small()
+    # Dummy inferences to compile CUDA graphs / initialize caches
     logger.info("[API] Warmup: Small Model")
     mm.generate(mm.small_model, mm.small_tokenizer, "System", "Test", max_new_tokens=2)
+    # Pre-warm TTS and STT
     logger.info("[API] Warmup: Processing pipeline caches...")
     agent.tts.synthesize_to_file("Ready.", "audio_output/warmup.wav")
     logger.info("[API] Pre-warming complete! Server is ready to accept requests.")

@@ -1,6 +1,6 @@
 # pipeline.py
 # used to chain all modules together
-# STT -> INPUT GUARDRAILS -> EMOTION ANALYSIS -> QUERY REWRITER -> RAG -> MAIN SLM -> OUTPUT GUARDRAILS -> MEMORY MANAGER -> TTS
+# STT -> EMOTION CLASSIFIER -> QUERY REWRITER -> RAG -> MAIN SLM -> MEMORY MANAGER -> TTS
 
 from loguru import logger
 from modules.stt import STTModule
@@ -13,14 +13,6 @@ from modules.rag import RAGModule
 
 # fallbacks
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
-FALLBACK_CLARIFY = (
-    "I want to help, but I need a bit more detail about your symptoms. "
-    "Please tell me what you are feeling, since when, and how severe it is."
-)
-FALLBACK_ESCALATE = (
-    "This may be an emergency. Please call emergency services immediately "
-    "or go to the nearest hospital right now."
-)
 
 
 class VoiceAgentPipeline:
