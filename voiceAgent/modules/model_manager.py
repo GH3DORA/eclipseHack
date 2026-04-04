@@ -30,41 +30,38 @@ class ModelManager:
     # lazy loaders, only loaded when needed.
     def load_small(self): #load fine-tuned small model (medical QA)
         if self.small_model is None:
-            logger.info("Loading fine-tuned small model...")
+            logger.info("Loading fine-tuned small model on CPU...")
             self.small_tokenizer=AutoTokenizer.from_pretrained(SMALLMODEL)
             self.small_model=AutoModelForCausalLM.from_pretrained(
                 SMALLMODEL,
-                torch_dtype=torch.float16,
-                device_map="auto"
-            )
+                torch_dtype=torch.float32,
+            ).to("cpu")
             self.small_model.eval()
-            logger.info("Fine-tuned small model ready.")
+            logger.info("Fine-tuned small model ready (CPU).")
         return self.small_model, self.small_tokenizer
 
     def load_small_base(self): #load base (unfinetuned) model for classifiers
         if self.small_base_model is None:
-            logger.info("Loading base small model for classifiers...")
+            logger.info("Loading base small model for classifiers on CPU...")
             self.small_base_tokenizer=AutoTokenizer.from_pretrained(BASE_SMALL)
             self.small_base_model=AutoModelForCausalLM.from_pretrained(
                 BASE_SMALL,
-                torch_dtype=torch.float16,
-                device_map="auto"
-            )
+                torch_dtype=torch.float32,
+            ).to("cpu")
             self.small_base_model.eval()
-            logger.info("Base small model ready.")
+            logger.info("Base small model ready (CPU).")
         return self.small_base_model, self.small_base_tokenizer
 
     def load_guardrail(self): #load fine-tuned guardrail classifier
         if self.guardrail_model is None:
-            logger.info("Loading fine-tuned guardrail model...")
+            logger.info("Loading fine-tuned guardrail model on CPU...")
             self.guardrail_tokenizer=AutoTokenizer.from_pretrained(GUARDRAILMODEL)
             self.guardrail_model=AutoModelForCausalLM.from_pretrained(
                 GUARDRAILMODEL,
-                torch_dtype=torch.float16,
-                device_map="auto"
-            )
+                torch_dtype=torch.float32,
+            ).to("cpu")
             self.guardrail_model.eval()
-            logger.info("Guardrail model ready.")
+            logger.info("Guardrail model ready (CPU).")
         return self.guardrail_model, self.guardrail_tokenizer
 
     def load_large(self):
@@ -74,11 +71,9 @@ class ModelManager:
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
                 bnb_4bit_use_double_quant=True,
-                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_compute_dtype=torch.float16,
             )
             self.large_tokenizer=AutoTokenizer.from_pretrained(LARGEMODEL)
-            if self.large_tokenizer.pad_token is None:
-                self.large_tokenizer.pad_token=self.large_tokenizer.eos_token
             self.large_model=AutoModelForCausalLM.from_pretrained(
                 LARGEMODEL,
                 quantization_config=bnb_config,

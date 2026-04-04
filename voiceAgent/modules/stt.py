@@ -7,11 +7,10 @@ from config import WHISPER_MODEL_SIZE,SAMPLE_RATE,RECORD_DURATION
 
 class STTModule:
     def __init__(self):
-        device="cuda" if torch.cuda.is_available() else "cpu"
         self.sample_rate=SAMPLE_RATE
-        compute_type="float16" if device=="cuda" else "int8"
-        logger.info(f"Loading Whisper ({WHISPER_MODEL_SIZE}) on {device}")
-        self.model=WhisperModel(WHISPER_MODEL_SIZE,device=device,compute_type=compute_type)
+        # Force CPU to keep GPU free for Mistral-7B
+        logger.info(f"Loading Whisper ({WHISPER_MODEL_SIZE}) on cpu")
+        self.model=WhisperModel(WHISPER_MODEL_SIZE,device="cpu",compute_type="int8")
         logger.info("Finished loading Whisper.")
     
     def record(self, duration:int=RECORD_DURATION)->np.ndarray:

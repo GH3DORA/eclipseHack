@@ -4,18 +4,17 @@ from modules.model_manager import ModelManager
 from loguru import logger
 
 EXECUTION_PROMPT="""
-You are a routing agent for a personal health assistant.
-Given the user's message, choose the best action:
-CHITCHAT - greeting, thanks, farewell, or casual social message not about health.
-ANSWER — the user is describing symptoms, asking about a condition, medication, diet, exercise, or any health topic. This is the default for anything health-related.
-CLARIFY — the user's message is too vague to give useful health advice (e.g. just "I feel bad" with no details).
-ESCALATE — the user describes an emergency: chest pain with breathlessness, signs of stroke, severe bleeding, loss of consciousness, suicidal thoughts, or any life-threatening situation.
+You are a routing agent for a personal health assistant. Classify the user's message into ONE category.
 
-Reply with ONE word only: CHITCHAT, ANSWER, CLARIFY, or ESCALATE.
+ESCALATE — ONLY for life-threatening emergencies: chest pain with breathlessness, stroke symptoms, severe bleeding, loss of consciousness, suicidal intent.
+CHITCHAT — ONLY for greetings, thanks, farewell, or casual social messages with ZERO health content.
+ANSWER — ANY message that mentions symptoms, body parts, pain, conditions, medications, diet, exercise, health questions, or describes how they feel physically. This is the DEFAULT. When in doubt, choose ANSWER.
+
+Reply with ONE word only: CHITCHAT, ANSWER, or ESCALATE.
 """
 
 class ExecutionRouter:
-    VALID={"CHITCHAT","ANSWER","CLARIFY","ESCALATE"}
+    VALID={"CHITCHAT","ANSWER","ESCALATE"}
     def __init__(self):
         self.mm=ModelManager.get_instance()
 

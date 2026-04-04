@@ -199,7 +199,7 @@
   "eos_token": "<|im_end|>",
   "errors": "replace",
   "extra_special_tokens": {},
-  "model_max_length": 256,
+  "model_max_length": 1024,
   "pad_token": "<|endoftext|>",
   "split_special_tokens": false,
   "tokenizer_class": "Qwen2Tokenizer",

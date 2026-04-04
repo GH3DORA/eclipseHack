@@ -62,7 +62,7 @@ model:
   tokenizer_pad_token: null
   tokenizer_kwargs: {}
   processor_kwargs: {}
-  model_max_length: 512
+  model_max_length: 1024
   load_pretrained_weights: true
   trust_remote_code: false
   torch_dtype_str: bfloat16
@@ -194,7 +194,7 @@ training:
   ddp_find_unused_parameters: null
   max_grad_norm: 1.0
   trainer_kwargs:
-    max_length: 512
+    max_length: 1024
   verl_config_overrides: {}
   profiler:
     save_dir: null

@@ -59,8 +59,6 @@ class VoiceAgentPipeline:
         #route based branching
         if exec_route=="CHITCHAT":
             response=self.main_slm.generate(clean_query,memory_context,system_override=SYSTEM_OVERRIDE_CHITCHAT)
-        elif exec_route=="CLARIFY":
-            response=FALLBACK_CLARIFY
         elif exec_route=="ESCALATE":
             response=FALLBACK_ESCALATE
         else:

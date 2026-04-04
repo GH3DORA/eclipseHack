@@ -7,10 +7,10 @@
 #   oumi train -c training/train_large.yaml
 
 model:
-  model_name: "mistralai/Mistral-7B-Instruct-v0.3"
+  model_name: "Qwen/Qwen2.5-3B-Instruct"
   torch_dtype_str: "bfloat16"
-  attn_implementation: "sdpa"
-  model_max_length: 512
+  attn_implementation: "eager"
+  model_max_length: 1024
  
 data:
   train:

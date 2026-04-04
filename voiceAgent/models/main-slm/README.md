@@ -1,9 +1,9 @@
 ---
-base_model: Qwen/Qwen2.5-1.5B-Instruct
+base_model: Qwen/Qwen2.5-3B-Instruct
 library_name: peft
 model_name: main-slm
 tags:
-- base_model:adapter:Qwen/Qwen2.5-1.5B-Instruct
+- base_model:adapter:Qwen/Qwen2.5-3B-Instruct
 - lora
 - sft
 - transformers
@@ -14,7 +14,7 @@ pipeline_tag: text-generation
 
 # Model Card for main-slm
 
-This model is a fine-tuned version of [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct).
+This model is a fine-tuned version of [Qwen/Qwen2.5-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct).
 It has been trained using [TRL](https://github.com/huggingface/trl).
 
 ## Quick start
