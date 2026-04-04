@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import random
 from pathlib import Path
 from datasets import load_dataset
@@ -26,13 +27,29 @@ Never diagnose definitively — use phrases like "this could be" or "it may be h
 Be empathetic and reassuring in your tone.
 """
 
+def clean_doctor_response(text: str) -> str:
+    """Remove doctor names, clinic greetings, sign-offs, and cap to 5 sentences."""
+    # "I am Dr. X from Y." / "This is Dr. X" / "Hi, I'm Dr. X"
+    text=re.sub(r"(?:Hello[!.,]?\s*|Hi[!.,]?\s*)?(?:I am|I'm|This is)\s+Dr\.?\s+\w+(?:\s+from\s+[\w.]+)?[.,!]?\s*", "", text, flags=re.IGNORECASE)
+    # "Welcome to HCM." / "Hello! Welcome to X."
+    text=re.sub(r"(?:Hello[!.,]?\s*)?Welcome to\s+[\w.]+[.,!]?\s*", "", text, flags=re.IGNORECASE)
+    # "Regards, Dr. X" / "Hope this helps! Regards, Dr. X"
+    text=re.sub(r"(?:Hope this helps[!.]?\s*)?(?:Regards|Best regards|Thanks|Thank you),?\s*Dr\.?\s+\w+.*$", "", text, flags=re.IGNORECASE)
+    # Any remaining "Dr. Name" → "a doctor"
+    text=re.sub(r"\bDr\.?\s+[A-Z]\w+\b", "a doctor", text)
+    # Cap to 5 sentences
+    sentences=re.split(r'(?<=[.!?])\s+', text.strip())
+    if len(sentences)>5:
+        text=" ".join(sentences[:5])
+    return text.strip()
+
 def format_example(row: dict) -> dict:
     """
     ai-medical-chatbot columns: Description (topic), Patient (question), Doctor (answer)
     We wrap with a medical system prompt for Oumi SFT chat format.
     """
     patient_query = row.get("Patient", "").strip()
-    doctor_response = row.get("Doctor", "").strip()
+    doctor_response = clean_doctor_response(row.get("Doctor", "").strip())
     if not patient_query or not doctor_response:
         return None
     return {

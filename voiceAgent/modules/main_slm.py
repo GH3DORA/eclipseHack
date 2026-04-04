@@ -1,3 +1,4 @@
+import re
 from modules.model_manager import ModelManager
 from loguru import logger
 
@@ -40,7 +41,24 @@ class MainSLM:
         response=self.mm.generate(
             model, token,
             system_prompt, user_prompt,
-            max_new_tokens=80
+            max_new_tokens=150
         )
+        response=self._clean(response)
         logger.info(f"Main SLM response: {response[:80]}")
         return response
+
+    @staticmethod
+    def _clean(text:str)->str:
+        # Remove "I am Dr. X from Y." / "This is Dr. X" / "Hi, I'm Dr. X" style intros
+        text=re.sub(r"(?:Hello[!.]?\s*|Hi[!.]?\s*)?(?:I am|I'm|This is)\s+Dr\.?\s+\w+(?:\s+from\s+[\w.]+)?[.,!]?\s*", "", text, flags=re.IGNORECASE)
+        # Remove "Hello! Welcome to HCM." / "Welcome to X." style intros
+        text=re.sub(r"(?:Hello[!.,]?\s*)?Welcome to\s+[\w.]+[.,!]?\s*", "", text, flags=re.IGNORECASE)
+        # Remove "Regards, Dr. X" / "Hope this helps! Regards, Dr. X" style sign-offs
+        text=re.sub(r"(?:Hope this helps[!.]?\s*)?(?:Regards|Best regards|Thanks|Thank you),?\s*Dr\.?\s+\w+.*$", "", text, flags=re.IGNORECASE)
+        # Remove any remaining "Dr. Name" references
+        text=re.sub(r"\bDr\.?\s+[A-Z]\w+\b", "a doctor", text)
+        # Truncate to max 5 sentences
+        sentences=re.split(r'(?<=[.!?])\s+', text.strip())
+        if len(sentences)>5:
+            text=" ".join(sentences[:5])
+        return text.strip()

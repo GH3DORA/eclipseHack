@@ -4,6 +4,7 @@ import re
 import torch
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from peft import PeftModel
 from config import SMALLMODEL,LARGEMODEL,BASE_SMALL,BASE_LARGE,GUARDRAILMODEL
 
 class ModelManager:
@@ -67,21 +68,22 @@ class ModelManager:
     def load_large(self):
         if self.large_model is None:
             torch.cuda.empty_cache()
-            logger.info("Loading large model on GPU (4-bit)...")
+            logger.info("Loading base model + LoRA adapter on GPU (4-bit)...")
             bnb=BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
                 bnb_4bit_compute_dtype=torch.float16,
             )
-            self.large_tokenizer=AutoTokenizer.from_pretrained(LARGEMODEL)
-            self.large_model=AutoModelForCausalLM.from_pretrained(
-                LARGEMODEL,
+            self.large_tokenizer=AutoTokenizer.from_pretrained(BASE_LARGE)
+            base=AutoModelForCausalLM.from_pretrained(
+                BASE_LARGE,
                 quantization_config=bnb,
                 device_map="auto",
                 low_cpu_mem_usage=True,
             )
+            self.large_model=PeftModel.from_pretrained(base, LARGEMODEL)
             self.large_model.eval()
-            logger.info("Large model ready (GPU, 4-bit).")
+            logger.info("Large model ready (GPU, 4-bit + LoRA).")
         return self.large_model, self.large_tokenizer
     
     #shared inference used by every model
