@@ -48,11 +48,6 @@ class VoiceAgentPipeline:
         clean_query=self.rewriter.rewrite(user_text)
         memory_context=self.memory_manager.get_context(user_id)
 
-        if exec_route=="CHITCHAT":
-            response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
-            self.memory_manager.extract_and_store(clean_query,response)
-            return response
-
         # Default route: ANSWER with RAG augmentation when available
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
