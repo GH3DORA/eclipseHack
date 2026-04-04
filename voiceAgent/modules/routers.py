@@ -1,28 +1,62 @@
-# execution routing only — decides whether to answer, clarify, escalate, or chitchat
+# execution routing — rule-based for reliability, no LLM needed
+# CHITCHAT and ESCALATE have clear keyword patterns; everything else is ANSWER
 
-from modules.model_manager import ModelManager  
+import re
 from loguru import logger
 
-EXECUTION_PROMPT="""
-You are a routing agent for a personal health assistant. Classify the user's message into ONE category.
+# patterns that indicate pure chitchat (no health content)
+CHITCHAT_PATTERNS=re.compile(
+    r"^(hi|hello|hey|good morning|good evening|good afternoon|good night|"
+    r"bye|goodbye|see you|thanks|thank you|ok|okay|sure|"
+    r"how are you|what's up|whats up|who are you|what is your name)[\s!?.]*$",
+    re.IGNORECASE
+)
 
-ESCALATE — ONLY for life-threatening emergencies: chest pain with breathlessness, stroke symptoms, severe bleeding, loss of consciousness, suicidal intent.
-CHITCHAT — ONLY for greetings, thanks, farewell, or casual social messages with ZERO health content.
-ANSWER — ANY message that mentions symptoms, body parts, pain, conditions, medications, diet, exercise, health questions, or describes how they feel physically. This is the DEFAULT. When in doubt, choose ANSWER.
+# keywords that signal a medical emergency
+ESCALATE_KEYWORDS=[
+    "chest pain", "can't breathe", "cannot breathe", "difficulty breathing",
+    "heart attack", "stroke", "seizure", "unconscious", "passed out",
+    "severe bleeding", "heavy bleeding", "choking",
+    "want to die", "want to kill myself", "suicidal", "end my life",
+    "overdose", "poisoning"
+]
 
-Reply with ONE word only: CHITCHAT, ANSWER, or ESCALATE.
-"""
+# health-related keywords — if any are present, it's definitely ANSWER not CHITCHAT
+HEALTH_KEYWORDS=[
+    "pain", "ache", "hurt", "fever", "sick", "ill", "symptom",
+    "headache", "nausea", "vomit", "cough", "cold", "sneeze",
+    "weak", "tired", "fatigue", "dizzy", "swollen", "rash",
+    "infection", "medication", "medicine", "doctor", "hospital",
+    "blood", "pressure", "sugar", "diabetes", "allergy",
+    "stomach", "chest", "throat", "back", "joint", "muscle",
+    "breathing", "sleep", "weight", "diet", "exercise",
+    "feeling", "feverish", "sweating", "body", "energy",
+]
 
 class ExecutionRouter:
-    VALID={"CHITCHAT","ANSWER","ESCALATE"}
     def __init__(self):
-        self.mm=ModelManager.get_instance()
+        pass
 
     def route(self,query:str)->str:
-        model,token=self.mm.load_small_base()
-        raw=self.mm.generate(model,token,EXECUTION_PROMPT,query,max_new_tokens=5)
-        label=raw.strip().upper().split()[0] if raw.strip() else "ANSWER"
-        if label not in self.VALID:
-            label="ANSWER"
-        logger.info(f"Route: {label}")
-        return label
+        q=query.lower().strip()
+
+        # check escalation first (life-threatening)
+        for kw in ESCALATE_KEYWORDS:
+            if kw in q:
+                logger.info("Route: ESCALATE")
+                return "ESCALATE"
+
+        # check if any health keyword is present — if so, skip chitchat check
+        has_health=any(kw in q for kw in HEALTH_KEYWORDS)
+        if has_health:
+            logger.info("Route: ANSWER")
+            return "ANSWER"
+
+        # pure chitchat — only if message is short and matches greeting/farewell pattern
+        if CHITCHAT_PATTERNS.match(q):
+            logger.info("Route: CHITCHAT")
+            return "CHITCHAT"
+
+        # default: ANSWER
+        logger.info("Route: ANSWER")
+        return "ANSWER"

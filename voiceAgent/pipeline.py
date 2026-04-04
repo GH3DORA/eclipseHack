@@ -1,14 +1,12 @@
 # pipeline.py
 # used to chain all modules together
-# STT -> INPUT GUARDRAILS -> EMOTION ANALYSIS -> QUERY REWRITER -> EXECUTION ROUTER -> RAG -> MAIN SLM -> OUTPUT GUARDRAILS -> MEMORY MANAGER -> TTS
-# for EXECUTION ROUTER, stages : ANSWER / CHITCHAT / CLARIFY / ESCALATE
+# STT -> INPUT GUARDRAILS -> EMOTION ANALYSIS -> QUERY REWRITER -> RAG -> MAIN SLM -> OUTPUT GUARDRAILS -> MEMORY MANAGER -> TTS
 
 from loguru import logger
 from modules.stt import STTModule
 from modules.guardrails import Guardrails
 from modules.emotion_analyzer import EmotionAnalyzer
 from modules.query_rewriter import QueryRewriter
-from modules.routers import ExecutionRouter
 from modules.memory_manager import MemoryManager
 from modules.main_slm import MainSLM
 from modules.tts import TTSModule
@@ -16,10 +14,7 @@ from modules.rag import RAGModule
 
 # fallbacks
 FALLBACK_INVALID = ("I'm sorry, I didn't quite catch that. Could you rephrase your question?")
-FALLBACK_ESCALATE = ("This sounds like it could be serious. Please call emergency services or visit the nearest hospital immediately. If in India, dial 112 or 108 for an ambulance.")
-FALLBACK_CLARIFY = ("Could you please describe your symptoms in a bit more detail? For example, when did it start, how severe is it, and where exactly do you feel it?")
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
-SYSTEM_OVERRIDE_CHITCHAT = ("You are a friendly personal health assistant. The user has sent a casual social message - a greeting, thanks, or farewell. Reply warmly and naturally in one short sentence. Do not ask any follow up questions unless it feels natural.")
 
 
 class VoiceAgentPipeline:
@@ -30,7 +25,6 @@ class VoiceAgentPipeline:
         self.guardrails=Guardrails(memory_manager=self.memory_manager)
         self.emotion_analyzer=EmotionAnalyzer()
         self.rewriter=QueryRewriter()
-        self.exec_router=ExecutionRouter()
         self.main_slm=MainSLM()
         self.tts=TTSModule()
 
@@ -54,26 +48,16 @@ class VoiceAgentPipeline:
 
         clean_query=self.rewriter.rewrite(user_text)
         memory_context=self.memory_manager.get_context()
-        exec_route=self.exec_router.route(clean_query)
 
-        #route based branching
-        if exec_route=="CHITCHAT":
-            response=self.main_slm.generate(clean_query,memory_context,system_override=SYSTEM_OVERRIDE_CHITCHAT)
-        elif exec_route=="ESCALATE":
-            response=FALLBACK_ESCALATE
+        # retrieve relevant medical context via RAG
+        logger.info("Retrieving medical context via RAG...")
+        rag_context=self.rag.retrieve(clean_query, top_k=2)
+
+        if rag_context:
+            augmented_query=f"Relevant medical knowledge:\n{rag_context}\n\nPatient query: {clean_query}"
+            response=self.main_slm.generate(augmented_query,memory_context,emotion_tone=emotion_tone)
         else:
-            # ANSWER — the main path: symptom analysis, diagnosis, health advice
-            # Use RAG to retrieve relevant medical context
-            logger.info("Retrieving medical context via RAG...")
-            rag_context=self.rag.retrieve(clean_query, top_k=2)
-
-            if rag_context:
-                # Augment the query with retrieved knowledge
-                augmented_query=f"Relevant medical knowledge:\n{rag_context}\n\nPatient query: {clean_query}"
-                response=self.main_slm.generate(augmented_query,memory_context,emotion_tone=emotion_tone)
-            else:
-                # No RAG results — fall back to model's own knowledge
-                response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
+            response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
 
         output_status=self.guardrails.check_output(response,user_query=clean_query)
         if output_status in {"INVALID","UNSAFE"}:
