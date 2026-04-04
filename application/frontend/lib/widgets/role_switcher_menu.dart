@@ -149,7 +149,7 @@ class _RoleSwitcherMenuState extends State<RoleSwitcherMenu>
                       const SizedBox(height: 8),
                       _buildRoleButton('nurse', 'Nurse', Icons.health_and_safety_rounded),
                       const SizedBox(height: 8),
-                      _buildRoleButton('patient', 'Patient', Icons.person_rounded),
+                      _buildRoleButton('surgeon', 'Surgeon', Icons.healing_rounded),
                     ],
                   ),
                 ),

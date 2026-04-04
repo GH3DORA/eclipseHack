@@ -48,8 +48,8 @@ class VoiceAgentPipeline:
                 system_override = "You are a highly analytical clinical Doctor. Use precise medical terminology, offer structured evaluations, and specify potential diagnoses clearly while still maintaining a professional and serious demeanor."
             elif role == "nurse":
                 system_override = "You are an empathetic, practical, and highly procedural Nurse assistant. Focus on comforting the patient, offering step-by-step practical procedural advice, and focusing on immediate care or relief."
-            elif role == "patient":
-                system_override = "You are a friendly, warm, and highly approachable health guide. Explain everything simply in layman's terms without any jargon, using analogies and comforting layman language so anyone can easily understand."
+            elif role == "surgeon":
+                system_override = "You are an expert Surgeon. Focus on surgical interventions, anatomical details, precise pre-operative and post-operative care, and operative procedures using highly technical clinical terminology."
 
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
