@@ -4,7 +4,7 @@
 
 from loguru import logger
 from modules.stt import STTModule
-from modules.guardrails import Guardrails
+from modules.combined_classifier import CombinedClassifier 
 from modules.emotion_analyzer import EmotionAnalyzer
 from modules.query_rewriter import QueryRewriter
 from modules.memory_manager import MemoryManager
@@ -22,7 +22,7 @@ class VoiceAgentPipeline:
         logger.info("Starting personal health assistant pipeline...")
         self.stt=STTModule()
         self.memory_manager=MemoryManager()
-        self.guardrails=Guardrails(memory_manager=self.memory_manager)
+        self.classifier=CombinedClassifier()   
         self.emotion_analyzer=EmotionAnalyzer()
         self.rewriter=QueryRewriter()
         self.main_slm=MainSLM()
@@ -37,9 +37,10 @@ class VoiceAgentPipeline:
     # PROCESSING LOGIC
     def process(self,user_text:str)->str:
         print(f"\n YOU : {user_text}")
-        input_status=self.guardrails.check_input(user_text)
-        if input_status=="INVALID":
-            return FALLBACK_INVALID
+        safety,exec_route=self.classifier.classify(user_text)    # ← NEW
+        if safety=="INVALID":                                     # ← NEW
+            return FALLBACK_INVALID 
+
 
         # emotion detection
         emotion=self.emotion_analyzer.detect(user_text)
@@ -59,10 +60,6 @@ class VoiceAgentPipeline:
         else:
             response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
 
-        output_status=self.guardrails.check_output(response,user_query=clean_query)
-        if output_status in {"INVALID","UNSAFE"}:
-            logger.warning(f"Output guardrail blocked response {response}")
-            response="I apologise, I wasn't able to generate a suitable response. Please try again."
         self.memory_manager.extract_and_store(clean_query,response)
         return response
     
