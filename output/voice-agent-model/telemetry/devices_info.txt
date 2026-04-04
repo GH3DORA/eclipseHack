@@ -1,0 +1,2 @@
+CPU cores: 16 CUDA devices: 1
+device(0)='NVIDIA GeForce RTX 3050 Laptop GPU' Capability: (8, 6) Memory: [Total: 4.0GiB Free: 3.22GiB Allocated: 0.0GiB Cached: 0.0GiB]
