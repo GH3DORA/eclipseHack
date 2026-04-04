@@ -1,52 +1,38 @@
-# modules/combined_classifier.py — NEW FILE
+# modules/combined_classifier.py
+# Single LLM call: emotion classification only (safety handled by main SLM)
 from modules.model_manager import ModelManager
 from loguru import logger
+from config import EMOTION_LABELS
 
-COMBINED_PROMPT="""
-You are a classifier for a personal health voice assistant.
-Given the user message, reply with exactly TWO words on one line:
+EMOTION_PROMPT="""Classify the emotional state of this message into exactly ONE word:
+neutral, anxious, frustrated, sad, grateful, or confused.
+Reply with ONE word only."""
 
-Word 1 - Safety: VALID or INVALID
-Word 2 - Route: ANSWER, CHITCHAT, CLARIFY, or ESCALATE
-
-Rules for Safety:
-VALID = any health question, symptom, greeting, or normal message
-INVALID = abusive, gibberish, random characters, clear misuse
-
-Rules for Route:
-CHITCHAT = greeting, thanks, farewell, casual message
-ANSWER = symptoms, health question, medication, advice
-CLARIFY = too vague to help (e.g. just "I feel bad")
-ESCALATE = emergency: chest pain + breathlessness, stroke, severe bleeding, suicidal thoughts
-
-Example outputs:
-VALID ANSWER
-VALID CHITCHAT
-VALID ESCALATE
-INVALID ANSWER
-
-Reply with exactly two words only.
-"""
+EMOTION_TONE_MAP={
+    "neutral":    "Respond in a calm, professional, and informative manner.",
+    "anxious":    "The patient is anxious. Be extra reassuring and gentle. Acknowledge their worry before giving information.",
+    "frustrated": "The patient is frustrated. Acknowledge their frustration empathetically. Be direct and solution-oriented.",
+    "sad":        "The patient sounds sad or low. Be warm, compassionate, and supportive. Gently encourage them.",
+    "grateful":   "The patient is grateful. Respond warmly and positively. Reinforce their good feelings.",
+    "confused":   "The patient is confused. Use simple, clear language. Avoid jargon. Explain step by step.",
+}
 
 class CombinedClassifier:
     def __init__(self):
         self.mm = ModelManager.get_instance()
 
     def classify(self, query: str) -> tuple[str, str]:
+        """Returns (emotion, emotion_tone)."""
         model, token = self.mm.load_small_base()
         raw = self.mm.generate(
             model, token,
-            COMBINED_PROMPT, query,
+            EMOTION_PROMPT, query,
             max_new_tokens=5
         )
-        parts = raw.strip().upper().split()
-        safety = parts[0] if parts else "VALID"
-        route = parts[1] if len(parts) > 1 else "ANSWER"
+        emotion = raw.strip().lower().split()[0] if raw.strip() else "neutral"
+        if emotion not in EMOTION_LABELS:
+            emotion = "neutral"
 
-        if safety not in {"VALID", "INVALID"}:
-            safety = "VALID"
-        if route not in {"ANSWER", "CHITCHAT", "CLARIFY", "ESCALATE"}:
-            route = "ANSWER"
-
-        logger.info(f"Classifier: safety={safety} route={route}")
-        return safety, route
+        tone = EMOTION_TONE_MAP.get(emotion, EMOTION_TONE_MAP["neutral"])
+        logger.info(f"Classifier: emotion={emotion}")
+        return emotion, tone

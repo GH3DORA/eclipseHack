@@ -66,25 +66,26 @@ class ModelManager:
 
     def load_large(self):
         if self.large_model is None:
-            logger.info("Loading large model (4-bit quantized)...")
-            bnb_config=BitsAndBytesConfig(
+            torch.cuda.empty_cache()
+            logger.info("Loading large model on GPU (4-bit)...")
+            bnb=BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
-                bnb_4bit_use_double_quant=True,
                 bnb_4bit_compute_dtype=torch.float16,
             )
             self.large_tokenizer=AutoTokenizer.from_pretrained(LARGEMODEL)
             self.large_model=AutoModelForCausalLM.from_pretrained(
                 LARGEMODEL,
-                quantization_config=bnb_config,
+                quantization_config=bnb,
                 device_map="auto",
+                low_cpu_mem_usage=True,
             )
             self.large_model.eval()
-            logger.info("Large model ready.")
-        return self.large_model,self.large_tokenizer
+            logger.info("Large model ready (GPU, 4-bit).")
+        return self.large_model, self.large_tokenizer
     
     #shared inference used by every model
-    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,enable_thinking:bool=False,greedy:bool=False)->str:
+    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,enable_thinking:bool=False)->str:
         messages=[
             {"role":"system","content":system_prompt},
             {"role":"user","content":user_prompt}
@@ -101,17 +102,15 @@ class ModelManager:
         inputs=tokenizer(text,return_tensors="pt").to(model.device)
 
         with torch.no_grad():
-            gen_kwargs=dict(
+            outputs=model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                pad_token_id=tokenizer.eos_token_id,
+                do_sample=True,
+                temperature=0.3,
+                top_p=0.9,
                 repetition_penalty=1.15,
+                pad_token_id=tokenizer.eos_token_id
             )
-            if greedy:
-                gen_kwargs["do_sample"]=False
-            else:
-                gen_kwargs.update(do_sample=True,temperature=0.3,top_p=0.9)
-            outputs=model.generate(**gen_kwargs)
 
         new_tokens=outputs[0][inputs["input_ids"].shape[1]:]
         response=tokenizer.decode(new_tokens,skip_special_tokens=True)

@@ -5,7 +5,6 @@
 from loguru import logger
 from modules.stt import STTModule
 from modules.combined_classifier import CombinedClassifier 
-from modules.emotion_analyzer import EmotionAnalyzer
 from modules.query_rewriter import QueryRewriter
 from modules.memory_manager import MemoryManager
 from modules.main_slm import MainSLM
@@ -13,7 +12,6 @@ from modules.tts import TTSModule
 from modules.rag import RAGModule
 
 # fallbacks
-FALLBACK_INVALID = ("I'm sorry, I didn't quite catch that. Could you rephrase your question?")
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
 
 
@@ -23,7 +21,6 @@ class VoiceAgentPipeline:
         self.stt=STTModule()
         self.memory_manager=MemoryManager()
         self.classifier=CombinedClassifier()   
-        self.emotion_analyzer=EmotionAnalyzer()
         self.rewriter=QueryRewriter()
         self.main_slm=MainSLM()
         self.tts=TTSModule()
@@ -35,20 +32,13 @@ class VoiceAgentPipeline:
 
 
     # PROCESSING LOGIC
-    def process(self,user_text:str)->str:
+    def process(self,user_text:str,user_id:str="local_user")->str:
         print(f"\n YOU : {user_text}")
-        safety,exec_route=self.classifier.classify(user_text)    # ← NEW
-        if safety=="INVALID":                                     # ← NEW
-            return FALLBACK_INVALID 
-
-
-        # emotion detection
-        emotion=self.emotion_analyzer.detect(user_text)
-        emotion_tone=self.emotion_analyzer.get_tone_instruction(emotion)
+        emotion,emotion_tone=self.classifier.classify(user_text)
         print(f" [Emotion: {emotion}]")
 
         clean_query=self.rewriter.rewrite(user_text)
-        memory_context=self.memory_manager.get_context()
+        memory_context=self.memory_manager.get_context(user_id)
 
         # retrieve relevant medical context via RAG
         logger.info("Retrieving medical context via RAG...")
@@ -60,7 +50,7 @@ class VoiceAgentPipeline:
         else:
             response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
 
-        self.memory_manager.extract_and_store(clean_query,response)
+        self.memory_manager.extract_and_store(user_id,clean_query,response)
         return response
     
     def run(self):
