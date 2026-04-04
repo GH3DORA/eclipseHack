@@ -216,6 +216,7 @@ def get_history():
 class ChatRequest(BaseModel):
     message: str
     conversation_id: Optional[str] = None
+    role_override: Optional[str] = None
 
 
 @app.post("/chat/text")
@@ -240,7 +241,7 @@ async def chat_text(req: ChatRequest):
             conversation_id = conv_id
 
         # Process text
-        response = await asyncio.to_thread(agent.process, message)
+        response = await asyncio.to_thread(agent.process, message, "local_user", req.role_override)
 
         # Save messages to DB
         conn = get_db()
@@ -297,7 +298,7 @@ async def chat_text(req: ChatRequest):
 
 
 @app.post("/chat/voice")
-async def chat_voice(audio: UploadFile = File(...), conversation_id: str = Form(default=None)):
+async def chat_voice(audio: UploadFile = File(...), conversation_id: str = Form(default=None), role_override: Optional[str] = Form(default=None)):
     """Voice-to-Voice interaction. Accepts audio file, transcribes, processes, and returns audio."""
     logger.info(f"[API] Received voice file: {audio.filename} (conv: {conversation_id})")
 
@@ -333,7 +334,7 @@ async def chat_voice(audio: UploadFile = File(...), conversation_id: str = Form(
             conversation_id = conv_id
 
         # 2. Process via Agent
-        response = await asyncio.to_thread(agent.process, text)
+        response = await asyncio.to_thread(agent.process, text, "local_user", role_override)
 
         # 3. Text to Speech
         resp_id = uuid.uuid4().hex

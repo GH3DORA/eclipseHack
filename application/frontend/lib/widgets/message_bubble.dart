@@ -41,21 +41,20 @@ class MessageBubble extends StatelessWidget {
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: kSurfaceColor,
-          borderRadius: const BorderRadius.only(
+        decoration: const BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
-            topRight: Radius.circular(4),
+            topRight: Radius.circular(20),
             bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+            bottomRight: Radius.circular(4),
           ),
-          border: Border.all(color: kSurfaceBorderColor),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (message.isVoice) ...[
-              const Icon(Icons.mic_rounded, color: kPrimaryColor, size: 14),
+              const Icon(Icons.mic_rounded, color: Colors.white70, size: 14),
               const SizedBox(width: 6),
             ],
             Flexible(
@@ -115,7 +114,19 @@ class MessageBubble extends StatelessWidget {
                       ],
                     ),
                   ),
-                Text(message.text, style: kAiMessageStyle),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: const BoxDecoration(
+                    color: kSurfaceColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Text(message.text, style: kAiMessageStyle),
+                ),
                 const SizedBox(height: 10),
                 // Action row
                 Row(

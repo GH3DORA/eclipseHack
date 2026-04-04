@@ -32,7 +32,7 @@ class VoiceAgentPipeline:
 
 
     # PROCESSING LOGIC
-    def process(self,user_text:str,user_id:str="local_user")->str:
+    def process(self,user_text:str,user_id:str="local_user",role_override:str|None=None)->str:
         print(f"\n YOU : {user_text}")
         emotion,emotion_tone=self.classifier.classify(user_text)
         print(f" [Emotion: {emotion}]")
@@ -41,14 +41,24 @@ class VoiceAgentPipeline:
         memory_context=self.memory_manager.get_context(user_id)
 
         # Default route: ANSWER with RAG augmentation when available
+        system_override = None
+        if role_override:
+            role = role_override.lower()
+            if role == "doctor":
+                system_override = "You are a highly analytical clinical Doctor. Use precise medical terminology, offer structured evaluations, and specify potential diagnoses clearly while still maintaining a professional and serious demeanor."
+            elif role == "nurse":
+                system_override = "You are an empathetic, practical, and highly procedural Nurse assistant. Focus on comforting the patient, offering step-by-step practical procedural advice, and focusing on immediate care or relief."
+            elif role == "patient":
+                system_override = "You are a friendly, warm, and highly approachable health guide. Explain everything simply in layman's terms without any jargon, using analogies and comforting layman language so anyone can easily understand."
+
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
 
         if rag_context:
             augmented_query=f"Relevant medical knowledge:\n{rag_context}\n\nPatient query: {clean_query}"
-            response=self.main_slm.generate(augmented_query,memory_context,emotion_tone=emotion_tone)
+            response=self.main_slm.generate(augmented_query,memory_context,system_override=system_override,emotion_tone=emotion_tone)
         else:
-            response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
+            response=self.main_slm.generate(clean_query,memory_context,system_override=system_override,emotion_tone=emotion_tone)
 
         self.memory_manager.extract_and_store(user_id,clean_query,response)
         return response

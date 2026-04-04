@@ -59,10 +59,10 @@ class ChatService {
 
   // ── Messaging ──────────────────────────────────────────────────────────────
 
-  /// Send a text message. Returns a map with 'reply', 'audio_url', and 'conversation_id'.
   static Future<Map<String, dynamic>> sendTextMessage({
     required String message,
     String? conversationId,
+    String? role,
   }) async {
     final res = await http.post(
       Uri.parse('$kBaseUrl/chat/text'),
@@ -70,6 +70,7 @@ class ChatService {
       body: jsonEncode({
         'message': message,
         if (conversationId != null) 'conversation_id': conversationId,
+        if (role != null) 'role_override': role,
       }),
     );
 
@@ -84,6 +85,7 @@ class ChatService {
   static Future<Map<String, dynamic>> sendVoiceMessage({
     required String audioFilePath,
     String? conversationId,
+    String? role,
   }) async {
     final request =
         http.MultipartRequest('POST', Uri.parse('$kBaseUrl/chat/voice'));
@@ -102,6 +104,9 @@ class ChatService {
 
     if (conversationId != null) {
       request.fields['conversation_id'] = conversationId;
+    }
+    if (role != null) {
+      request.fields['role_override'] = role;
     }
 
     final streamed = await request.send();

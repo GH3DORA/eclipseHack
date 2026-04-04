@@ -12,8 +12,10 @@ import '../widgets/top_bar.dart';
 import '../widgets/chat_drawer.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/call_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/input_bar.dart';
+import '../widgets/role_switcher_menu.dart';
 
 /// Main chat screen — manages conversation state, messaging, and voice calls.
 class ChatScreen extends StatefulWidget {
@@ -45,9 +47,14 @@ class _ChatScreenState extends State<ChatScreen>
   final List<double> _waveBars = List.generate(18, (i) => 0.2);
   Timer? _waveTimer;
 
+  // Role Settings
+  String _activeRole = 'doctor';
+  bool _isRoleMenuOpen = false;
+
   @override
   void initState() {
     super.initState();
+    _loadRolePreference();
     _waveController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -60,9 +67,26 @@ class _ChatScreenState extends State<ChatScreen>
         _startListeningForVoice();
       }
     };
+  }
 
-    // Start with a fresh chat — no history loaded
-    // Conversations list will load when drawer opens
+  Future<void> _loadRolePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+      setState(() {
+        _activeRole = prefs.getString('user_role') ?? 'doctor';
+      });
+    }
+  }
+
+  Future<void> _changeRole(String newRole) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_role', newRole);
+    if (mounted) {
+      setState(() {
+        _activeRole = newRole;
+        _isRoleMenuOpen = false;
+      });
+    }
   }
 
   @override
@@ -260,6 +284,11 @@ class _ChatScreenState extends State<ChatScreen>
   }
 
   // ── Message Sending ───────────────────────────────────────────────────────
+  void _sendQuickAction(String text) {
+    _controller.text = text;
+    _sendTextMessage();
+  }
+
   Future<void> _sendTextMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
@@ -277,6 +306,7 @@ class _ChatScreenState extends State<ChatScreen>
       final data = await ChatService.sendTextMessage(
         message: text,
         conversationId: _currentConversationId,
+        role: _activeRole,
       );
 
       if (!mounted) return;
@@ -329,6 +359,7 @@ class _ChatScreenState extends State<ChatScreen>
       final data = await ChatService.sendVoiceMessage(
         audioFilePath: audioFilePath,
         conversationId: _currentConversationId,
+        role: _activeRole,
       );
 
       if (!mounted) return;
@@ -399,42 +430,76 @@ class _ChatScreenState extends State<ChatScreen>
         onConversationDelete: _deleteConversation,
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            TopBar(
-              onMenuTap: () {
-                _loadConversations();
-                _scaffoldKey.currentState?.openEndDrawer();
-              },
-              onNewChatTap: _startNewChat,
-              isCallMode: _isCallMode,
+            Column(
+              children: [
+                TopBar(
+                  onMenuTap: () {
+                    _loadConversations();
+                    _scaffoldKey.currentState?.openEndDrawer();
+                  },
+                  onNewChatTap: _startNewChat,
+                  isCallMode: _isCallMode,
+                  activeRole: _activeRole,
+                ),
+                const Divider(height: 1, color: kDividerColor),
+                Expanded(
+                  child: _messages.isEmpty
+                      ? EmptyState(onQuickAction: _sendQuickAction)
+                      : ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
+                          itemCount: _messages.length,
+                          itemBuilder: (ctx, i) => MessageBubble(
+                            message: _messages[i],
+                            onReplayAudio: (url) => _audioService.playAudio(url),
+                          ),
+                        ),
+                ),
+                CallOverlay(
+                  isCallMode: _isCallMode,
+                  callState: _callState,
+                  waveBars: _waveBars,
+                  onEndCall: _endCallMode,
+                ),
+                InputBar(
+                  isCallMode: _isCallMode,
+                  controller: _controller,
+                  onSend: _sendTextMessage,
+                  onMicTap: _toggleCallMode,
+                ),
+              ],
             ),
-            const Divider(height: 1, color: kDividerColor),
-            Expanded(
-              child: _messages.isEmpty
-                  ? const EmptyState()
-                  : ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 16),
-                      itemCount: _messages.length,
-                      itemBuilder: (ctx, i) => MessageBubble(
-                        message: _messages[i],
-                        onReplayAudio: (url) => _audioService.playAudio(url),
-                      ),
-                    ),
+            
+            // The popup menu
+            Positioned.fill(
+              child: RoleSwitcherMenu(
+                isOpen: _isRoleMenuOpen,
+                activeRole: _activeRole,
+                onRoleSelected: _changeRole,
+                onTapOutside: () => setState(() => _isRoleMenuOpen = false),
+              ),
             ),
-            CallOverlay(
-              isCallMode: _isCallMode,
-              callState: _callState,
-              waveBars: _waveBars,
-              onEndCall: _endCallMode,
-            ),
-            InputBar(
-              isCallMode: _isCallMode,
-              controller: _controller,
-              onSend: _sendTextMessage,
-              onMicTap: _toggleCallMode,
+            
+            // Settings Floating Button
+            Positioned(
+              bottom: 80,
+              right: 16,
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: kSurfaceColor,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: kSurfaceBorderColor),
+                ),
+                child: const Icon(Icons.settings_rounded, color: kPrimaryColor, size: 20),
+                onPressed: () {
+                  setState(() => _isRoleMenuOpen = !_isRoleMenuOpen);
+                },
+              ),
             ),
           ],
         ),

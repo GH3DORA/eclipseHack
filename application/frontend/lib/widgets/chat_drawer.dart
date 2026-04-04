@@ -64,7 +64,7 @@ class ChatDrawer extends StatelessWidget {
                     color: Colors.white, size: 20),
               ),
               const SizedBox(width: 10),
-              const Expanded(
+              Expanded(
                 child: Text('MediGuide', style: kDrawerTitleStyle),
               ),
 
@@ -106,7 +106,7 @@ class ChatDrawer extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          const Text('Recent Conversations', style: kDrawerSectionStyle),
+          Text('Recent Conversations', style: kDrawerSectionStyle),
         ],
       ),
     );

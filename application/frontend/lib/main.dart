@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/constants.dart';
-import 'screens/chat_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'MediGuide Assistant',
       theme: _buildTheme(),
-      home: const ChatScreen(),
+      home: const SplashScreen(),
     );
   }
 
