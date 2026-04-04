@@ -84,7 +84,7 @@ class ModelManager:
         return self.large_model,self.large_tokenizer
     
     #shared inference used by every model
-    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,enable_thinking:bool=False)->str:
+    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,enable_thinking:bool=False,greedy:bool=False)->str:
         messages=[
             {"role":"system","content":system_prompt},
             {"role":"user","content":user_prompt}
@@ -101,15 +101,17 @@ class ModelManager:
         inputs=tokenizer(text,return_tensors="pt").to(model.device)
 
         with torch.no_grad():
-            outputs=model.generate(
+            gen_kwargs=dict(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                do_sample=True,
-                temperature=0.3,
-                top_p=0.9,
+                pad_token_id=tokenizer.eos_token_id,
                 repetition_penalty=1.15,
-                pad_token_id=tokenizer.eos_token_id
             )
+            if greedy:
+                gen_kwargs["do_sample"]=False
+            else:
+                gen_kwargs.update(do_sample=True,temperature=0.3,top_p=0.9)
+            outputs=model.generate(**gen_kwargs)
 
         new_tokens=outputs[0][inputs["input_ids"].shape[1]:]
         response=tokenizer.decode(new_tokens,skip_special_tokens=True)
