@@ -104,7 +104,10 @@ class ModelManager:
             outputs=model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                do_sample=False,
+                do_sample=True,
+                temperature=0.3,
+                top_p=0.9,
+                repetition_penalty=1.15,
                 pad_token_id=tokenizer.eos_token_id
             )
 

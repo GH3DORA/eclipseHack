@@ -1,4 +1,3 @@
-# core generation model — emotion-aware personal health assistant
 from modules.model_manager import ModelManager
 from loguru import logger
 
@@ -26,16 +25,22 @@ class MainSLM:
     def __init__(self):
         self.mm=ModelManager.get_instance()
 
-    def generate(self,query:str,memory_context:str="",system_override:str | None=None, emotion_tone:str | None=None)->str:
+    def generate(self, query:str, memory_context:str="",
+                 system_override:str|None=None,
+                 emotion_tone:str|None=None)->str:
         system_prompt=system_override if system_override else BASE_PROMPT
         if emotion_tone and not system_override:
-            system_prompt=f"{BASE_PROMPT}\n\nEMOTIONAL CONTEXT: {emotion_tone}"
+            system_prompt=f"{BASE_PROMPT}\n\nTone guidance: {emotion_tone}"
         parts=[]
         if memory_context:
             parts.append(memory_context)
         parts.append(f"User: {query}")
         user_prompt="\n\n".join(parts)
         model,token=self.mm.load_large()
-        response=self.mm.generate(model,token,system_prompt,user_prompt,max_new_tokens=256)
-        logger.info(f"Main SLM response : {response[:80]}")
+        response=self.mm.generate(
+            model, token,
+            system_prompt, user_prompt,
+            max_new_tokens=80
+        )
+        logger.info(f"Main SLM response: {response[:80]}")
         return response
