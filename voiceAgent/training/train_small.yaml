@@ -11,8 +11,9 @@
 
 model:
   model_name: "Qwen/Qwen2.5-0.5B-Instruct"
-  torch_dtype_str: "float32"
+  torch_dtype_str: "bfloat16"
   attn_implementation: "eager"
+  model_max_length: 256
 
 data:
   train:
@@ -33,10 +34,11 @@ training:
   trainer_type: TRL_SFT
   use_peft: true
   output_dir: "./models/small-slm"
+  max_steps: 50
   num_train_epochs: 3
-  per_device_train_batch_size: 2
-  per_device_eval_batch_size: 2
-  gradient_accumulation_steps: 4
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
   enable_gradient_checkpointing: true
   learning_rate: 3.0e-4
   lr_scheduler_type: "cosine"
@@ -45,7 +47,7 @@ training:
   save_steps: 200
   eval_strategy: "steps"
   eval_steps: 200
-  mixed_precision_dtype: "BF16"
+  # mixed_precision_dtype: "BF16"
   seed: 42
 
 peft:

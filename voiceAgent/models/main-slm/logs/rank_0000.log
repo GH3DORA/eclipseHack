@@ -1,0 +1,86 @@
+[2026-04-03 13:24:39,108][oumi][rank0][pid:2276][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-03 13:24:41,237][oumi][rank0][pid:2276][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 13:24:43,164][oumi][rank0][pid:2276][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 13:24:43,517][oumi][rank0][pid:2276][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 13:24:43,519][oumi][rank0][pid:2276][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 13:24:53,710][oumi][rank0][pid:2276][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 13:24:54,449][oumi][rank0][pid:2276][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 13:25:12,765][oumi][rank0][pid:2276][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 13:25:12,767][oumi][rank0][pid:2276][MainThread][INFO]][train.py:564] Training init time: 33.714s
+[2026-04-03 13:25:12,768][oumi][rank0][pid:2276][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 13:34:13,810][oumi][rank0][pid:10988][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-03 13:34:16,817][oumi][rank0][pid:10988][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 13:34:18,752][oumi][rank0][pid:10988][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 13:34:19,353][oumi][rank0][pid:10988][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 13:34:19,355][oumi][rank0][pid:10988][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 13:34:28,798][oumi][rank0][pid:10988][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 13:34:29,538][oumi][rank0][pid:10988][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 13:34:29,871][oumi][rank0][pid:10988][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 13:34:29,873][oumi][rank0][pid:10988][MainThread][INFO]][train.py:564] Training init time: 16.104s
+[2026-04-03 13:34:29,875][oumi][rank0][pid:10988][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 13:44:26,777][oumi][rank0][pid:10988][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-03 13:44:26,780][oumi][rank0][pid:10988][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-03 13:44:26,782][oumi][rank0][pid:10988][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 4.37 GB
+[2026-04-03 13:44:26,784][oumi][rank0][pid:10988][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-03 13:44:26,790][oumi][rank0][pid:10988][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-03 13:44:28,432][oumi][rank0][pid:10988][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/main-slm
+[2026-04-03 13:44:28,434][oumi][rank0][pid:10988][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback
+[2026-04-03 13:55:00,516][oumi][rank0][pid:41884][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-03 13:55:03,547][oumi][rank0][pid:41884][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 13:55:05,204][oumi][rank0][pid:41884][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 13:55:05,824][oumi][rank0][pid:41884][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 13:55:05,826][oumi][rank0][pid:41884][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 13:55:16,018][oumi][rank0][pid:41884][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 13:55:16,586][oumi][rank0][pid:41884][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 13:55:16,950][oumi][rank0][pid:41884][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 13:55:16,951][oumi][rank0][pid:41884][MainThread][INFO]][train.py:564] Training init time: 16.475s
+[2026-04-03 13:55:16,953][oumi][rank0][pid:41884][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 14:05:39,821][oumi][rank0][pid:41884][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-03 14:05:39,823][oumi][rank0][pid:41884][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-03 14:05:39,825][oumi][rank0][pid:41884][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 4.37 GB
+[2026-04-03 14:05:39,826][oumi][rank0][pid:41884][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-03 14:05:39,833][oumi][rank0][pid:41884][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-03 14:05:41,423][oumi][rank0][pid:41884][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/main-slm
+[2026-04-03 14:05:41,426][oumi][rank0][pid:41884][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback
+[2026-04-03 14:11:00,206][oumi][rank0][pid:9260][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-03 14:11:02,298][oumi][rank0][pid:9260][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 14:11:04,056][oumi][rank0][pid:9260][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:11:04,407][oumi][rank0][pid:9260][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 14:11:04,408][oumi][rank0][pid:9260][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:11:12,352][oumi][rank0][pid:9260][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 14:11:12,964][oumi][rank0][pid:9260][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:11:13,326][oumi][rank0][pid:9260][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 14:11:13,329][oumi][rank0][pid:9260][MainThread][INFO]][train.py:564] Training init time: 13.158s
+[2026-04-03 14:11:13,330][oumi][rank0][pid:9260][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 14:18:04,340][oumi][rank0][pid:9260][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-03 14:18:04,342][oumi][rank0][pid:9260][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-03 14:18:04,343][oumi][rank0][pid:9260][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 4.37 GB
+[2026-04-03 14:18:04,345][oumi][rank0][pid:9260][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-03 14:18:04,349][oumi][rank0][pid:9260][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-03 14:18:05,347][oumi][rank0][pid:9260][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/main-slm
+[2026-04-03 14:18:05,348][oumi][rank0][pid:9260][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback
+[2026-04-03 14:24:00,787][oumi][rank0][pid:28972][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-03 14:24:02,838][oumi][rank0][pid:28972][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 14:24:04,712][oumi][rank0][pid:28972][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:24:05,103][oumi][rank0][pid:28972][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'llm_int8_enable_fp32_cpu_offload': True}.
+[2026-04-03 14:24:05,105][oumi][rank0][pid:28972][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:24:14,498][oumi][rank0][pid:28972][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 14:24:15,191][oumi][rank0][pid:28972][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:24:33,900][oumi][rank0][pid:28972][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 14:24:33,902][oumi][rank0][pid:28972][MainThread][INFO]][train.py:564] Training init time: 33.152s
+[2026-04-03 14:24:33,903][oumi][rank0][pid:28972][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 14:31:19,423][oumi][rank0][pid:28972][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-03 14:31:19,425][oumi][rank0][pid:28972][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-03 14:31:19,427][oumi][rank0][pid:28972][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 3.18 GB
+[2026-04-03 14:31:19,428][oumi][rank0][pid:28972][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-03 14:31:19,431][oumi][rank0][pid:28972][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-03 14:31:20,356][oumi][rank0][pid:28972][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/main-slm
+[2026-04-03 14:31:20,357][oumi][rank0][pid:28972][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback

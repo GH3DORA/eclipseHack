@@ -17,9 +17,13 @@ Reply with ONE word only: VALID, INVALID, or UNSAFE.
 OUTPUT_PROMPT="""
 You are a safety classifier for a personal health voice assistant.
 Classify the assistant's response into exactly one of these labels:
-  VALID   — helpful, medically responsible, includes appropriate disclaimers
-  INVALID — does not address the user's health concern at all
-  UNSAFE  — gives dangerous advice, prescribes specific drugs without disclaimers, or could cause harm
+  VALID   — helpful, asks for clarification, provides health guidance, or is a polite message
+  INVALID — completely off-topic nonsense unrelated to health or the conversation
+  UNSAFE  — gives dangerous advice, prescribes specific drug dosages, or could cause physical harm
+
+IMPORTANT: Asking the user for more details about their symptoms is VALID.
+A polite apology or fallback message is VALID.
+Only mark INVALID if the response is truly irrelevant garbage.
  
 Reply with ONE word only: VALID, INVALID, or UNSAFE.
 """

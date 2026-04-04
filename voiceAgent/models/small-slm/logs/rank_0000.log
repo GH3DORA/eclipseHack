@@ -33,3 +33,42 @@
 [2026-04-03 10:57:08,916][oumi][rank0][pid:34336][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
 [2026-04-03 10:57:08,917][oumi][rank0][pid:34336][MainThread][INFO]][train.py:564] Training init time: 35.344s
 [2026-04-03 10:57:08,921][oumi][rank0][pid:34336][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 13:45:03,318][oumi][rank0][pid:13944][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 13:45:06,589][oumi][rank0][pid:13944][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-0.5B-Instruct'.
+[2026-04-03 13:45:08,014][oumi][rank0][pid:13944][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 13:45:08,610][oumi][rank0][pid:13944][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 13:45:12,248][oumi][rank0][pid:13944][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 13:45:15,511][oumi][rank0][pid:13944][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 13:45:46,821][oumi][rank0][pid:13944][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 13:45:46,824][oumi][rank0][pid:13944][MainThread][INFO]][train.py:564] Training init time: 43.568s
+[2026-04-03 13:45:46,826][oumi][rank0][pid:13944][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 14:18:28,580][oumi][rank0][pid:2976][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 14:18:30,649][oumi][rank0][pid:2976][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-0.5B-Instruct'.
+[2026-04-03 14:18:32,273][oumi][rank0][pid:2976][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:18:32,616][oumi][rank0][pid:2976][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:18:35,143][oumi][rank0][pid:2976][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 14:18:37,192][oumi][rank0][pid:2976][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:21:37,891][oumi][rank0][pid:36768][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 14:21:40,789][oumi][rank0][pid:36768][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-0.5B-Instruct'.
+[2026-04-03 14:21:42,435][oumi][rank0][pid:36768][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:21:43,019][oumi][rank0][pid:36768][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:21:44,826][oumi][rank0][pid:36768][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 14:21:46,766][oumi][rank0][pid:36768][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:31:42,572][oumi][rank0][pid:38704][MainThread][INFO]][train.py:324] Training config saved to models\small-slm\telemetry\training_config.yaml
+[2026-04-03 14:31:44,703][oumi][rank0][pid:38704][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-0.5B-Instruct'.
+[2026-04-03 14:31:46,563][oumi][rank0][pid:38704][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:31:46,916][oumi][rank0][pid:38704][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:31:49,488][oumi][rank0][pid:38704][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-03 14:31:51,647][oumi][rank0][pid:38704][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:32:10,185][oumi][rank0][pid:38704][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 14:32:10,186][oumi][rank0][pid:38704][MainThread][INFO]][train.py:564] Training init time: 27.652s
+[2026-04-03 14:32:10,187][oumi][rank0][pid:38704][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-03 14:34:49,265][oumi][rank0][pid:38704][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-03 14:34:49,267][oumi][rank0][pid:38704][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-03 14:34:49,268][oumi][rank0][pid:38704][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 1.45 GB
+[2026-04-03 14:34:49,269][oumi][rank0][pid:38704][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-03 14:34:49,273][oumi][rank0][pid:38704][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-03 14:34:50,312][oumi][rank0][pid:38704][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/small-slm
+[2026-04-03 14:34:50,314][oumi][rank0][pid:38704][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback

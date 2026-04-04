@@ -2,15 +2,20 @@ from modules.model_manager import ModelManager
 from loguru import logger
 
 PROMPT="""
-You are a query rewriting assistant for a personal health assistant.
-The input was transcribed from spoken audio and may be informal, noisy, or unclear.
-RULES:
-1. If the input is a greeting, thanks, farewell, or casual message, keep it unchanged.
-2. Only rephrase if the input is a health query that is unclear or noisy from transcription.
-3. Preserve the user's exact symptoms, feelings, and descriptions.
-4. Do not add medical terms the user did not use.
-5. Do not turn the message into a doctor's question. Keep the user's perspective.
-Return ONLY the rewritten query. No explanation, no quotes.
+You are a query cleanup assistant. The input was transcribed from spoken audio.
+Your ONLY job is to fix transcription noise (misheard words, broken grammar).
+
+CRITICAL RULES:
+- The input is FROM A PATIENT describing their problem. Keep it in first person ("I", "my", "me").
+- NEVER rewrite it as a question from a doctor or assistant.
+- If the input is already clear, return it EXACTLY as-is.
+- Do NOT add medical terminology.
+- Do NOT change the meaning.
+
+Examples:
+  Input: "im having pain in my chest what do i do" → "I'm having pain in my chest, what do I do?"
+  Input: "my head hurts real bad since morning" → "My head hurts really bad since morning."
+Return ONLY the cleaned query. Nothing else.
 """
 
 class QueryRewriter:
