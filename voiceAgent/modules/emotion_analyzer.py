@@ -33,7 +33,7 @@ class EmotionAnalyzer:
         self.mm=ModelManager.get_instance()
 
     def detect(self, text: str) -> str:
-        model, tokenizer = self.mm.load_small()
+        model, tokenizer = self.mm.load_small_base()
         raw = self.mm.generate(model, tokenizer, PROMPT, text, max_new_tokens=5)
         label = raw.strip().lower().split()[0] if raw.strip() else "neutral"
         if label not in EMOTION_LABELS:

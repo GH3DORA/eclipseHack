@@ -1,5 +1,8 @@
 SMALLMODEL="./models/small-slm"
 LARGEMODEL="./models/main-slm"
+GUARDRAILMODEL="./models/guardrail-slm"
+BASE_SMALL="Qwen/Qwen2.5-0.5B-Instruct"
+BASE_LARGE="Qwen/Qwen2.5-3B-Instruct"
 # SMALLMODEL="Qwen/Qwen2.5-0.5B-Instruct"
 # LARGEMODEL="Qwen/Qwen2.5-1.5B-Instruct"
 WHISPER_MODEL_SIZE="small"

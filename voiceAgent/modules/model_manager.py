@@ -1,9 +1,10 @@
 # CENTRAL MANAGER for all model instances. All instanced call "get_instance" to share the same model and not load the same weights multiple times.
 
+import re
 import torch
 from loguru import logger
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from config import SMALLMODEL,LARGEMODEL
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from config import SMALLMODEL,LARGEMODEL,BASE_SMALL,BASE_LARGE,GUARDRAILMODEL
 
 class ModelManager:
 
@@ -17,15 +18,19 @@ class ModelManager:
     def __init__(self):
         self.small_model=None
         self.small_tokenizer=None
+        self.small_base_model=None
+        self.small_base_tokenizer=None
+        self.guardrail_model=None
+        self.guardrail_tokenizer=None
         self.large_model=None
         self.large_tokenizer=None
         self.device="cuda" if torch.cuda.is_available() else "cpu"
         logger.info(f"ModelManager initialised - device is {self.device}")
 
     # lazy loaders, only loaded when needed.
-    def load_small(self): #load small qwen model for smaller tasks
+    def load_small(self): #load fine-tuned small model (medical QA)
         if self.small_model is None:
-            logger.info("Loading small model...")
+            logger.info("Loading fine-tuned small model...")
             self.small_tokenizer=AutoTokenizer.from_pretrained(SMALLMODEL)
             self.small_model=AutoModelForCausalLM.from_pretrained(
                 SMALLMODEL,
@@ -33,31 +38,69 @@ class ModelManager:
                 device_map="auto"
             )
             self.small_model.eval()
-            logger.info("Small model ready.")
+            logger.info("Fine-tuned small model ready.")
         return self.small_model, self.small_tokenizer
+
+    def load_small_base(self): #load base (unfinetuned) model for classifiers
+        if self.small_base_model is None:
+            logger.info("Loading base small model for classifiers...")
+            self.small_base_tokenizer=AutoTokenizer.from_pretrained(BASE_SMALL)
+            self.small_base_model=AutoModelForCausalLM.from_pretrained(
+                BASE_SMALL,
+                torch_dtype=torch.float16,
+                device_map="auto"
+            )
+            self.small_base_model.eval()
+            logger.info("Base small model ready.")
+        return self.small_base_model, self.small_base_tokenizer
+
+    def load_guardrail(self): #load fine-tuned guardrail classifier
+        if self.guardrail_model is None:
+            logger.info("Loading fine-tuned guardrail model...")
+            self.guardrail_tokenizer=AutoTokenizer.from_pretrained(GUARDRAILMODEL)
+            self.guardrail_model=AutoModelForCausalLM.from_pretrained(
+                GUARDRAILMODEL,
+                torch_dtype=torch.float16,
+                device_map="auto"
+            )
+            self.guardrail_model.eval()
+            logger.info("Guardrail model ready.")
+        return self.guardrail_model, self.guardrail_tokenizer
 
     def load_large(self):
         if self.large_model is None:
-            logger.info("Loading large model...")
+            logger.info("Loading large model (4-bit quantized)...")
+            bnb_config=BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_compute_dtype=torch.float16,
+            )
             self.large_tokenizer=AutoTokenizer.from_pretrained(LARGEMODEL)
             self.large_model=AutoModelForCausalLM.from_pretrained(
                 LARGEMODEL,
-                torch_dtype=torch.float16,
-                device_map="auto"
+                quantization_config=bnb_config,
+                device_map="auto",
             )
             self.large_model.eval()
             logger.info("Large model ready.")
         return self.large_model,self.large_tokenizer
     
     #shared inference used by every model
-    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,)->str:
+    def generate(self,model,tokenizer,system_prompt:str,user_prompt:str,max_new_tokens:int=256,enable_thinking:bool=False)->str:
         messages=[
             {"role":"system","content":system_prompt},
             {"role":"user","content":user_prompt}
         ]
-        text=tokenizer.apply_chat_template(
-            messages,tokenize=False,add_generation_prompt=True
-        )
+        # Qwen3.5 supports enable_thinking kwarg in chat template
+        template_kwargs={"tokenize":False,"add_generation_prompt":True}
+        try:
+            text=tokenizer.apply_chat_template(
+                messages,enable_thinking=enable_thinking,**template_kwargs
+            )
+        except TypeError:
+            # Fallback for models whose template doesn't support enable_thinking
+            text=tokenizer.apply_chat_template(messages,**template_kwargs)
         inputs=tokenizer(text,return_tensors="pt").to(model.device)
 
         with torch.no_grad():
@@ -70,4 +113,6 @@ class ModelManager:
 
         new_tokens=outputs[0][inputs["input_ids"].shape[1]:]
         response=tokenizer.decode(new_tokens,skip_special_tokens=True)
-        return response.strip()
+        # Strip any <think>...</think> blocks from thinking models
+        response=re.sub(r"<think>.*?</think>","",response,flags=re.DOTALL).strip()
+        return response

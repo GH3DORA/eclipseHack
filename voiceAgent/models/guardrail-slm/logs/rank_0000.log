@@ -1,0 +1,18 @@
+[2026-04-04 12:10:57,773][oumi][rank0][pid:43296][MainThread][INFO]][train.py:324] Training config saved to models\guardrail-slm\telemetry\training_config.yaml
+[2026-04-04 12:10:59,750][oumi][rank0][pid:43296][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-0.5B-Instruct'.
+[2026-04-04 12:11:01,973][oumi][rank0][pid:43296][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-04 12:11:02,280][oumi][rank0][pid:43296][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-04 12:11:04,154][oumi][rank0][pid:43296][MainThread][INFO]][train.py:469] Building PEFT model...
+[2026-04-04 12:11:06,273][oumi][rank0][pid:43296][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-04 12:11:12,473][oumi][rank0][pid:43296][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-04 12:11:12,474][oumi][rank0][pid:43296][MainThread][INFO]][train.py:564] Training init time: 14.745s
+[2026-04-04 12:11:12,475][oumi][rank0][pid:43296][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)
+[2026-04-04 12:13:53,684][oumi][rank0][pid:43296][MainThread][INFO]][train.py:572] Training is Complete.
+[2026-04-04 12:13:53,686][oumi][rank0][pid:43296][MainThread][INFO]][device_utils.py:343] GPU Metrics After Training: GPU runtime info: None.
+[2026-04-04 12:13:53,687][oumi][rank0][pid:43296][MainThread][INFO]][torch_utils.py:135] Peak GPU memory usage: 1.36 GB
+[2026-04-04 12:13:53,689][oumi][rank0][pid:43296][MainThread][INFO]][train.py:579] Saving final state...
+[2026-04-04 12:13:53,693][oumi][rank0][pid:43296][MainThread][INFO]][train.py:584] Saving final model...
+[2026-04-04 12:13:54,769][oumi][rank0][pid:43296][MainThread][INFO]][hf_trainer.py:127] Model has been saved at ./models/guardrail-slm
+[2026-04-04 12:13:54,771][oumi][rank0][pid:43296][MainThread][INFO]][train.py:236] 
+
+» We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback

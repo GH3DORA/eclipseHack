@@ -20,7 +20,7 @@ class ExecutionRouter:
         self.mm=ModelManager.get_instance()
 
     def route(self,query:str)->str:
-        model,token=self.mm.load_small()
+        model,token=self.mm.load_small_base()
         raw=self.mm.generate(model,token,EXECUTION_PROMPT,query,max_new_tokens=5)
         label=raw.strip().upper().split()[0] if raw.strip() else "ANSWER"
         if label not in self.VALID:

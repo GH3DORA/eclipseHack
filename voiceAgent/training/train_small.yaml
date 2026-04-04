@@ -1,6 +1,6 @@
 # training/train_small.yaml
 #
-# Fine-tunes Qwen2.5-0.5B-Instruct on HealthCareMagic-100k.
+# Fine-tunes Qwen2.5-0.5B-Instruct on ai-medical-chatbot dataset.
 # This model powers all classifier modules:
 #   guardrails, emotion analyzer, query rewriter, routers, verifier, memory, executor.
 #

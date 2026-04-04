@@ -14,7 +14,7 @@ from modules.tts import TTSModule
 
 #fallbacks
 FALLBACK_INVALID = ("I'm sorry, I didn't quite catch that. Could you rephrase your question?")
-FALLBACK_UNSAFE =  ("I'm sorry, I cannot assist with that request. Please ask health-related questions.")
+# FALLBACK_UNSAFE =  ("I'm sorry, I cannot assist with that request. Please ask health-related questions.")
 FALLBACK_ESCALATE = ("This sounds like it could be serious. Please call emergency services or visit the nearest hospital immediately. If in India, dial 112 or 108 for an ambulance.")
 FALLBACK_CLARIFY = ("Could you please describe your symptoms in a bit more detail? For example, when did it start, how severe is it, and where exactly do you feel it?")
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
@@ -24,11 +24,11 @@ class VoiceAgentPipeline:
     def __init__(self):
         logger.info("Starting personal health assistant pipeline...")
         self.stt=STTModule()
-        self.guardrails=Guardrails()
+        self.memory_manager=MemoryManager()
+        self.guardrails=Guardrails(memory_manager=self.memory_manager)
         self.emotion_analyzer=EmotionAnalyzer()
         self.rewriter=QueryRewriter()
         self.exec_router=ExecutionRouter()
-        self.memory_manager=MemoryManager()
         self.main_slm=MainSLM()
         self.tts=TTSModule()
         logger.info("Pipeline is ready.")
@@ -39,8 +39,8 @@ class VoiceAgentPipeline:
         input_status=self.guardrails.check_input(user_text)
         if input_status=="INVALID":
             return FALLBACK_INVALID
-        if input_status=="UNSAFE":
-            return FALLBACK_UNSAFE
+        # if input_status=="UNSAFE":
+        #     return FALLBACK_UNSAFE
 
         # emotion detection
         emotion=self.emotion_analyzer.detect(user_text)
@@ -50,7 +50,6 @@ class VoiceAgentPipeline:
         clean_query=self.rewriter.rewrite(user_text)
         memory_context=self.memory_manager.get_context()
         exec_route=self.exec_router.route(clean_query)
-        response:str=""
 
         #route based branching
         if exec_route=="CHITCHAT":
@@ -63,7 +62,7 @@ class VoiceAgentPipeline:
             # ANSWER — the main path: symptom analysis, diagnosis, health advice
             response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
 
-        output_status=self.guardrails.check_output(response)
+        output_status=self.guardrails.check_output(response,user_query=clean_query)
         if output_status in {"INVALID","UNSAFE"}:
             logger.warning(f"Output guardrail blocked response {response}")
             response="I apologise, I wasn't able to generate a suitable response. Please try again."

@@ -8,10 +8,13 @@ from loguru import logger
 
 CONFIGS={
     "large":"training/train_large.yaml",
-    "small":"training/train_small.yaml"
+    "small":"training/train_small.yaml",
+    "guardrail":"training/train_guardrail.yaml"
 }
 DATASET_TRAIN=Path("data/processed/train.jsonl")
 DATASET_EVAL=Path("data/processed/test.jsonl")
+GUARDRAIL_TRAIN=Path("data/processed/guardrail_train.jsonl")
+GUARDRAIL_EVAL=Path("data/processed/guardrail_test.jsonl")
 
 def checkDataset():
     if not DATASET_TRAIN.exists() or not DATASET_EVAL.exists():
@@ -20,6 +23,12 @@ def checkDataset():
     with open(DATASET_TRAIN) as f:
         count=sum(1 for _ in f)
         logger.info(f"Dataset OK - found {count} training samples.")
+    if GUARDRAIL_TRAIN.exists():
+        with open(GUARDRAIL_TRAIN) as f:
+            gc=sum(1 for _ in f)
+            logger.info(f"Guardrail dataset OK - found {gc} training samples.")
+    else:
+        logger.warning("Guardrail dataset not found. Run `python data/prepare_dataset.py` to generate it.")
 
 def checkGPU():
     import torch
@@ -89,9 +98,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model",
-        choices=["large", "small", "both"],
+        choices=["large", "small", "guardrail", "both", "all"],
         default="both",
-        help="Which model to fine-tune (default: both)"
+        help="Which model to fine-tune (default: both). Use 'all' for large+small+guardrail."
     )
     args = parser.parse_args()
  
@@ -103,7 +112,11 @@ if __name__ == "__main__":
     print()
  
     # Train
-    if args.model == "both":
+    if args.model == "all":
+        runTraining("large")
+        runTraining("small")
+        runTraining("guardrail")
+    elif args.model == "both":
         runTraining("large")
         runTraining("small")
     else:

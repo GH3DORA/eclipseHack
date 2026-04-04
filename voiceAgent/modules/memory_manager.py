@@ -20,7 +20,7 @@ class MemoryManager:
         self.memory:dict[str,str]={}
 
     def extract_and_store(self,user_query:str,agent_response:str):
-        model,token=self.mm.load_small()
+        model,token=self.mm.load_small_base()
         conversation=f"\n User prompt : {user_query} \n Agent response={agent_response}"
         raw=self.mm.generate(model,token,PROMPT,conversation,max_new_tokens=128)
         if raw.strip().upper()==None:

@@ -56,23 +56,22 @@ data:
     seed: null
     use_torchdata: null
 model:
-  model_name: Qwen/Qwen2.5-1.5B-Instruct
+  model_name: Qwen/Qwen2.5-3B-Instruct
   adapter_model: null
   tokenizer_name: null
   tokenizer_pad_token: null
   tokenizer_kwargs: {}
   processor_kwargs: {}
-  model_max_length: 256
+  model_max_length: 512
   load_pretrained_weights: true
   trust_remote_code: false
-  torch_dtype_str: float32
+  torch_dtype_str: bfloat16
   compile: false
   chat_template: null
   chat_template_kwargs: null
   attn_implementation: eager
   device_map: auto
-  model_kwargs:
-    llm_int8_enable_fp32_cpu_offload: true
+  model_kwargs: {}
   enable_liger_kernel: false
   shard_for_eval: false
   freeze_layers: []
@@ -181,7 +180,7 @@ training:
   adam_beta2: 0.999
   adam_epsilon: 1.0e-08
   sgd_momentum: 0.0
-  mixed_precision_dtype: BF16
+  mixed_precision_dtype: NONE
   compile: false
   include_performance_metrics: false
   include_alternative_mfu_metrics: false
@@ -195,7 +194,7 @@ training:
   ddp_find_unused_parameters: null
   max_grad_norm: 1.0
   trainer_kwargs:
-    max_length: 256
+    max_length: 512
   verl_config_overrides: {}
   profiler:
     save_dir: null
@@ -239,10 +238,10 @@ peft:
   lora_init_weights: DEFAULT
   lora_task_type: CAUSAL_LM
   q_lora: true
-  q_lora_bits: 8
-  bnb_4bit_quant_type: fp4
+  q_lora_bits: 4
+  bnb_4bit_quant_type: nf4
   llm_int8_skip_modules: null
-  use_bnb_nested_quant: false
+  use_bnb_nested_quant: true
   bnb_4bit_quant_storage: uint8
   bnb_4bit_compute_dtype: float32
   peft_save_mode: ADAPTER_ONLY

@@ -1,0 +1,62 @@
+# training/train_guardrail.yaml
+#
+# Fine-tunes Qwen2.5-0.5B-Instruct on guardrails classification data.
+# Teaches the model to classify inputs as VALID / INVALID for the health assistant.
+#
+# Run with:
+#   oumi train -c training/train_guardrail.yaml
+
+model:
+  model_name: "Qwen/Qwen2.5-0.5B-Instruct"
+  torch_dtype_str: "bfloat16"
+  attn_implementation: "eager"
+  model_max_length: 256
+
+data:
+  train:
+    datasets:
+      - dataset_name: "json"
+        dataset_kwargs:
+          data_files: "data/processed/guardrail_train.jsonl"
+        split: "train"
+
+  validation:
+    datasets:
+      - dataset_name: "json"
+        dataset_kwargs:
+          data_files: "data/processed/guardrail_test.jsonl"
+        split: "train"
+
+training:
+  trainer_type: TRL_SFT
+  use_peft: true
+  output_dir: "./models/guardrail-slm"
+  max_steps: 50
+  num_train_epochs: 3
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
+  enable_gradient_checkpointing: true
+  learning_rate: 3.0e-4
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.05
+  logging_steps: 25
+  save_steps: 200
+  eval_strategy: "steps"
+  eval_steps: 200
+  seed: 42
+
+peft:
+  lora_r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  lora_target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  lora_bias: "none"
+  lora_task_type: "CAUSAL_LM"

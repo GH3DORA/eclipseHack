@@ -84,3 +84,8 @@
 [2026-04-03 14:31:20,357][oumi][rank0][pid:28972][MainThread][INFO]][train.py:236] 
 
 » We're always looking for feedback. What's one thing we can improve? https://oumi.ai/feedback
+[2026-04-04 12:46:42,604][oumi][rank0][pid:31204][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-04 12:48:35,672][oumi][rank0][pid:2196][MainThread][INFO]][train.py:324] Training config saved to models\main-slm\telemetry\training_config.yaml
+[2026-04-04 12:49:05,013][oumi][rank0][pid:2196][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-3B-Instruct'.
+[2026-04-04 12:49:07,443][oumi][rank0][pid:2196][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-04 12:49:07,788][oumi][rank0][pid:2196][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.

@@ -23,7 +23,7 @@ class QueryRewriter:
         self.mm=ModelManager.get_instance()
     
     def rewrite(self,text:str)->str:
-        model,tokenizer=self.mm.load_small()
+        model,tokenizer=self.mm.load_small_base()
         result=self.mm.generate(model,tokenizer,PROMPT,text,max_new_tokens=100)
         cleaned=result.strip() if result.strip() else text
         logger.info(f"Cleaned up text --> {cleaned}")

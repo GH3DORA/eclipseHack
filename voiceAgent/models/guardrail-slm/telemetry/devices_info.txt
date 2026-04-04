@@ -1,0 +1,2 @@
+CPU cores: 16 CUDA devices: 1
+device(0)='NVIDIA GeForce RTX 4050 Laptop GPU' Capability: (8, 9) Memory: [Total: 6.0GiB Free: 4.95GiB Allocated: 0.0GiB Cached: 0.0GiB]
