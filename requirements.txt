@@ -33,6 +33,10 @@ pyaudio==0.2.14
 sounddevice==0.5.5
 soundfile==0.13.1
 
+# RAG
+faiss-cpu==1.11.0
+sentence-transformers==4.1.0
+
 # Utilities
 numpy==2.3.5
 huggingface-hub==0.36.2
