@@ -1,0 +1,6 @@
+# Local toolchains and large binaries
+jdk/
+
+# Local databases
+chat_history.db
+**/chat_history.db

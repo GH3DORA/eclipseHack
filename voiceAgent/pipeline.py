@@ -13,6 +13,14 @@ from modules.rag import RAGModule
 
 # fallbacks
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
+FALLBACK_CLARIFY = (
+    "I want to help, but I need a bit more detail about your symptoms. "
+    "Please tell me what you are feeling, since when, and how severe it is."
+)
+FALLBACK_ESCALATE = (
+    "This may be an emergency. Please call emergency services immediately "
+    "or go to the nearest hospital right now."
+)
 
 
 class VoiceAgentPipeline:
@@ -40,7 +48,12 @@ class VoiceAgentPipeline:
         clean_query=self.rewriter.rewrite(user_text)
         memory_context=self.memory_manager.get_context(user_id)
 
-        # retrieve relevant medical context via RAG
+        if exec_route=="CHITCHAT":
+            response=self.main_slm.generate(clean_query,memory_context,emotion_tone=emotion_tone)
+            self.memory_manager.extract_and_store(clean_query,response)
+            return response
+
+        # Default route: ANSWER with RAG augmentation when available
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
 
