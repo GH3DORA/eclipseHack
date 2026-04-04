@@ -1,0 +1,8 @@
+[2026-04-03 14:05:08,776][oumi][rank0][pid:40008][MainThread][INFO]][train.py:324] Training config saved to output\medical-voicecare-model\telemetry\training_config.yaml
+[2026-04-03 14:05:13,275][oumi][rank0][pid:40008][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 14:05:14,959][oumi][rank0][pid:40008][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 14:05:15,259][oumi][rank0][pid:40008][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 14:15:20,496][oumi][rank0][pid:40008][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 14:15:24,447][oumi][rank0][pid:40008][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 14:15:24,452][oumi][rank0][pid:40008][MainThread][INFO]][train.py:564] Training init time: 615.706s
+[2026-04-03 14:15:24,456][oumi][rank0][pid:40008][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)

@@ -1,0 +1,24 @@
+[2026-04-03 18:44:54,493][oumi][rank0][pid:30136][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 18:44:56,335][oumi][rank0][pid:30136][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:03:34,434][oumi][rank0][pid:39112][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:03:36,160][oumi][rank0][pid:39112][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:06:12,671][oumi][rank0][pid:11672][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:06:14,356][oumi][rank0][pid:11672][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:06:14,358][oumi][rank0][pid:11672][MainThread][WARNING]][hf_utils.py:44] The dataset data is missing a required file: dataset_info.json.
+[2026-04-03 19:07:25,169][oumi][rank0][pid:39884][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:07:26,899][oumi][rank0][pid:39884][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:07:26,902][oumi][rank0][pid:39884][MainThread][WARNING]][hf_utils.py:44] The dataset data is missing a required file: dataset_info.json.
+[2026-04-03 19:11:53,403][oumi][rank0][pid:11664][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:11:55,096][oumi][rank0][pid:11664][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:11:55,099][oumi][rank0][pid:11664][MainThread][WARNING]][hf_utils.py:44] The dataset data is missing a required file: dataset_info.json.
+[2026-04-03 19:12:32,895][oumi][rank0][pid:31620][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:12:34,563][oumi][rank0][pid:31620][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:12:34,564][oumi][rank0][pid:31620][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 19:19:55,109][oumi][rank0][pid:17132][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 19:19:56,827][oumi][rank0][pid:17132][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 19:19:58,513][oumi][rank0][pid:17132][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 19:19:58,800][oumi][rank0][pid:17132][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 19:19:59,706][oumi][rank0][pid:17132][MainThread][INFO]][torch_profiler_utils.py:163] PROF: Torch Profiler disabled!
+[2026-04-03 19:19:59,842][oumi][rank0][pid:17132][MainThread][INFO]][device_utils.py:343] GPU Metrics Before Training: GPU runtime info: None.
+[2026-04-03 19:19:59,844][oumi][rank0][pid:17132][MainThread][INFO]][train.py:564] Training init time: 4.755s
+[2026-04-03 19:19:59,845][oumi][rank0][pid:17132][MainThread][INFO]][train.py:565] Starting training... (TrainerType.TRL_SFT, transformers: 4.57.6)

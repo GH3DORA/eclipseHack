@@ -1,23 +1,30 @@
 model:
   model_name: "Qwen/Qwen2.5-1.5B-Instruct"
+  model_max_length: 2048
 
 data:
   train:
     datasets:
-      - dataset_name: "bitext/Bitext-customer-support-llm-chatbot-training-dataset"
+      - dataset_name: "json"
         split: "train"
+        dataset_kwargs:
+          data_files: "./voiceAgent/data/medical_train.jsonl"
 
 training:
-  trainer_type: SFT
+  trainer_type: TRL_SFT
   max_steps: 500
-  per_device_train_batch_size: 4
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
   learning_rate: 2e-4
-  output_dir: "./output/customer-support-model"
+  output_dir: "./output/medical-voicecare-model"
   save_steps: 100
-  logging_steps: 50
+  logging_steps: 10
+  save_final_model: true
+  enable_gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
 
 peft:
-  peft_method: lora
-  r: 16
-  lora_alpha: 32
+  lora_r: 8
+  lora_alpha: 16
   lora_dropout: 0.05
