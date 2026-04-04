@@ -21,9 +21,30 @@ logger.add(
 
 from pipeline import VoiceAgentPipeline
 
+VALID_ROLES = {"surgeon", "doctor", "nurse"}
+
+def select_role() -> str:
+    print("\n" + "=" * 50)
+    print("  Select your role:")
+    print("  1. Surgeon")
+    print("  2. Doctor")
+    print("  3. Nurse")
+    print("=" * 50)
+    while True:
+        choice = input("Enter 1/2/3: ").strip()
+        if choice == "1":
+            return "surgeon"
+        elif choice == "2":
+            return "doctor"
+        elif choice == "3":
+            return "nurse"
+        print("Invalid choice. Please enter 1, 2, or 3.")
+
 if __name__=="__main__":
     text_mode="--text" in sys.argv
-    agent=VoiceAgentPipeline()
+    role = select_role()
+    print(f"Starting as: {role.upper()}")
+    agent=VoiceAgentPipeline(role=role)
 
     if text_mode:
         agent.run_text()

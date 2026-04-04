@@ -14,10 +14,15 @@ from modules.rag import RAGModule
 # fallbacks
 FALLBACK_ERROR = ("I encountered a problem processing your request. Please try again later.")
 
+VALID_ROLES = {"surgeon", "doctor", "nurse"}
 
 class VoiceAgentPipeline:
-    def __init__(self):
-        logger.info("Starting personal health assistant pipeline...")
+    def __init__(self, role: str = "doctor"):
+        role = role.lower().strip()
+        if role not in VALID_ROLES:
+            raise ValueError(f"Invalid role '{role}'. Must be one of: {VALID_ROLES}")
+        self.role = role
+        logger.info(f"Starting personal health assistant pipeline (role={role})...")
         self.stt=STTModule()
         self.memory_manager=MemoryManager()
         self.classifier=CombinedClassifier()   
@@ -25,9 +30,9 @@ class VoiceAgentPipeline:
         self.main_slm=MainSLM()
         self.tts=TTSModule()
 
-        # RAG knowledge base
-        logger.info("Loading Knowledge Base...")
-        self.rag=RAGModule(index_path="medical_knowledge.index", doc_path="medical_knowledge.json")
+        # RAG knowledge base — scoped to role
+        logger.info(f"Loading Knowledge Base for role: {role}...")
+        self.rag=RAGModule(role=role)
         logger.info("Pipeline is ready.")
 
 

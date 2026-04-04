@@ -74,7 +74,16 @@ os.makedirs("audio_input", exist_ok=True)
 # Mount the output directory so Flutter can download the TTS responses
 app.mount("/static", StaticFiles(directory="audio_output"), name="static")
 
-agent = VoiceAgentPipeline()
+# One pipeline per role — lazily created
+agents: dict[str, VoiceAgentPipeline] = {}
+
+def get_agent(role: str = "doctor") -> VoiceAgentPipeline:
+    role = role.lower().strip()
+    if role not in {"surgeon", "doctor", "nurse"}:
+        role = "doctor"
+    if role not in agents:
+        agents[role] = VoiceAgentPipeline(role=role)
+    return agents[role]
 
 @app.on_event("startup")
 def preload_models():
@@ -91,18 +100,21 @@ def preload_models():
     mm.generate(mm.large_model, mm.large_tokenizer, "System", "Test", max_new_tokens=2)
     # Pre-warm TTS and STT
     logger.info("[API] Warmup: Processing pipeline caches...")
-    agent.tts.synthesize_to_file("Ready.", "audio_output/warmup.wav")
+    default = get_agent("doctor")
+    default.tts.synthesize_to_file("Ready.", "audio_output/warmup.wav")
     logger.info("[API] Pre-warming complete! Server is ready to accept requests.")
 
 class ChatRequest(BaseModel):
     message: str
+    role: str = "doctor"
 
 @app.post("/chat/text")
 async def chat_text(req: ChatRequest):
     """ Text-to-Text interaction. Returns response and an optional generated TTS audio file path """
     try:
         message = req.message
-        logger.info(f"[API] Received text: {message}")
+        agent = get_agent(req.role)
+        logger.info(f"[API] Received text (role={req.role}): {message}")
         
         # Process text directly
         response = await asyncio.to_thread(agent.process, message)
@@ -126,9 +138,10 @@ async def chat_text(req: ChatRequest):
         logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 @app.post("/chat/voice")
-async def chat_voice(audio: UploadFile = File(...)):
+async def chat_voice(audio: UploadFile = File(...), role: str = Form("doctor")):
     """ Voice-to-Voice interaction. Accepts audio file, transcripts, processes, and returns generated audio """
-    logger.info(f"[API] Received voice file: {audio.filename}")
+    agent = get_agent(role)
+    logger.info(f"[API] Received voice file: {audio.filename} (role={role})")
     
     in_id = uuid.uuid4().hex
     input_path = f"audio_input/in_{in_id}.wav"

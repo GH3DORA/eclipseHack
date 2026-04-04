@@ -4,16 +4,27 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+ROLE_INDEX_MAP = {
+    "surgeon": ("data/surgeon.index", "data/surgeon.json"),
+    "doctor":  ("data/doctor.index",  "data/doctor.json"),
+    "nurse":   ("data/nurse.index",   "data/nurse.json"),
+}
+
 class RAGModule:
-    def __init__(self, index_path="medical_knowledge.index", doc_path="medical_knowledge.json"):
+    def __init__(self, role: str = "doctor", index_path: str | None = None, doc_path: str | None = None):
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')  # keep VRAM free for SLM
         self.dimension = self.embedding_model.get_sentence_embedding_dimension()
-        
-        self.index_path = index_path
-        self.doc_path = doc_path
+
+        # If explicit paths given (for build_knowledge), use those; otherwise resolve from role
+        if index_path and doc_path:
+            self.index_path = index_path
+            self.doc_path = doc_path
+        else:
+            paths = ROLE_INDEX_MAP.get(role, ROLE_INDEX_MAP["doctor"])
+            self.index_path, self.doc_path = paths
+
         self.documents = []
         self.index = None
-        
         self._load_or_create_index()
 
     def _load_or_create_index(self):
