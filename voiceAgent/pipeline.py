@@ -28,19 +28,6 @@ SYSTEM_OVERRIDE_CHITCHAT = ("You are a friendly personal health assistant. The u
 class VoiceAgentPipeline:
     def __init__(self):
         logger.info("Starting personal health assistant pipeline...")
-        self.stt = STTModule()
-        self.guardrails = Guardrails()
-        self.emotion_analyzer = EmotionAnalyzer()
-        self.query_rewriter = QueryRewriter()
-        self.router = ExecutionRouter()
-        self.memory = MemoryManager()
-        self.slm = MainSLM()
-        self.tts = TTSModule()
-        
-        # NEW: Initialize RAG
-        logger.info("Loading Knowledge Base...")
-        self.rag = RAGModule(index_path="medical_knowledge.index", doc_path="medical_knowledge.json")
-
         self.stt=STTModule()
         self.memory_manager=MemoryManager()
         self.guardrails=Guardrails(memory_manager=self.memory_manager)
@@ -50,6 +37,11 @@ class VoiceAgentPipeline:
         self.main_slm=MainSLM()
         self.tts=TTSModule()
         logger.info("Pipeline is ready.")
+        
+        # NEW: Initialize RAG
+        logger.info("Loading Knowledge Base...")
+        self.rag = RAGModule(index_path="medical_knowledge.index", doc_path="medical_knowledge.json")
+
 
     # PROCESSING LOGIC
     def process(self,user_text:str)->str:
@@ -135,8 +127,8 @@ class VoiceAgentPipeline:
                 return self.tts.speak(FALLBACK_INVALID)
 
             # 2. Input Guardrails
-            if self.guardrails.check_input(user_text) != "VALID":
-                return self.tts.speak(FALLBACK_UNSAFE)
+            # if self.guardrails.check_input(user_text) != "VALID":
+            #     return self.tts.speak(FALLBACK_UNSAFE)
 
             # 3. Emotion & Rewriting
             emotion = self.emotion_analyzer.analyze(user_text)

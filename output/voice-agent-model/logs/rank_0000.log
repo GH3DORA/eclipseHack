@@ -1,0 +1,37 @@
+[2026-04-03 22:28:44,985][oumi][rank0][pid:35244][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:28:48,389][oumi][rank0][pid:35244][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:28:48,393][oumi][rank0][pid:35244][MainThread][WARNING]][hf_utils.py:44] The dataset voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:29:55,816][oumi][rank0][pid:13252][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:29:58,910][oumi][rank0][pid:13252][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:33:45,103][oumi][rank0][pid:15464][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:33:48,002][oumi][rank0][pid:15464][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:33:48,004][oumi][rank0][pid:15464][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:36:56,623][oumi][rank0][pid:33976][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:36:58,659][oumi][rank0][pid:33976][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:36:58,662][oumi][rank0][pid:33976][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:38:12,703][oumi][rank0][pid:36432][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:38:14,912][oumi][rank0][pid:36432][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:38:14,917][oumi][rank0][pid:36432][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:38:16,576][oumi][rank0][pid:36432][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 22:39:29,313][oumi][rank0][pid:23752][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:39:32,253][oumi][rank0][pid:23752][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:39:32,256][oumi][rank0][pid:23752][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:39:33,756][oumi][rank0][pid:23752][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 22:39:34,364][oumi][rank0][pid:23752][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'device_map': 'auto', 'dtype': 'bfloat16'}.
+[2026-04-03 22:39:34,366][oumi][rank0][pid:23752][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 22:42:42,714][oumi][rank0][pid:19924][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:42:44,800][oumi][rank0][pid:19924][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:42:44,804][oumi][rank0][pid:19924][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:42:46,388][oumi][rank0][pid:19924][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 22:42:46,780][oumi][rank0][pid:19924][MainThread][WARNING]][supported_models.py:99] Unused kwargs found in 'Qwen/Qwen2.5-1.5B-Instruct' config: {'device_map': 'auto', 'dtype': 'bfloat16'}.
+[2026-04-03 22:42:46,783][oumi][rank0][pid:19924][MainThread][INFO]][models.py:363] Using model class: <class 'transformers.models.auto.modeling_auto.AutoModelForCausalLM'> to instantiate model.
+[2026-04-03 22:44:18,224][oumi][rank0][pid:41480][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:44:20,296][oumi][rank0][pid:41480][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:44:20,298][oumi][rank0][pid:41480][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:44:21,592][oumi][rank0][pid:41480][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 22:48:15,958][oumi][rank0][pid:19664][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:48:18,052][oumi][rank0][pid:19664][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
+[2026-04-03 22:48:18,054][oumi][rank0][pid:19664][MainThread][WARNING]][hf_utils.py:44] The dataset D:\ACM hack\eclipseHack\voiceAgent\data is missing a required file: dataset_info.json.
+[2026-04-03 22:48:19,391][oumi][rank0][pid:19664][MainThread][INFO]][models.py:287] Building model using device_map: auto (DeviceRankInfo(world_size=1, rank=0, local_world_size=1, local_rank=0))...
+[2026-04-03 22:52:20,697][oumi][rank0][pid:29956][MainThread][INFO]][train.py:324] Training config saved to output\voice-agent-model\telemetry\training_config.yaml
+[2026-04-03 22:52:23,685][oumi][rank0][pid:29956][MainThread][INFO]][models.py:499] Using the model's built-in chat template for model 'Qwen/Qwen2.5-1.5B-Instruct'.
