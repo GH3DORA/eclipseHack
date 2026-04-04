@@ -38,10 +38,6 @@ class VoiceAgentPipeline:
         logger.info("Loading Knowledge Base...")
         self.rag=RAGModule(index_path="medical_knowledge.index", doc_path="medical_knowledge.json")
         logger.info("Pipeline is ready.")
-        
-        # NEW: Initialize RAG
-        logger.info("Loading Knowledge Base...")
-        self.rag = RAGModule(index_path="medical_knowledge.index", doc_path="medical_knowledge.json")
 
 
     # PROCESSING LOGIC
