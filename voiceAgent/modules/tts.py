@@ -4,19 +4,31 @@ import numpy as np
 import soundfile as sf
 import sounddevice as sd
 from loguru import logger
-from kokoro import KPipeline
+try:
+    from kokoro import KPipeline
+    KOKORO_AVAILABLE = True
+except ImportError:
+    KOKORO_AVAILABLE = False
+    logger.warning("Kokoro TTS is not installed. TTS will be disabled.")
+
 from config import TTS_VOICE
 
 class TTSModule:
     def __init__(self):
-        logger.info("Loading Kokoro TTS...")
-        self.pipeline=KPipeline(lang_code="a")
-        self.voice=TTS_VOICE
-        self.sample_rate=24000
-        logger.info("Kokoro ready.")
+        if KOKORO_AVAILABLE:
+            logger.info("Loading Kokoro TTS...")
+            self.pipeline=KPipeline(lang_code="a")
+            self.voice=TTS_VOICE
+            self.sample_rate=24000
+            logger.info("Kokoro ready.")
+        else:
+            self.pipeline = None
+            self.sample_rate = 24000
     
     def speak(self,text:str):
-        if not text.strip():
+        if not text.strip() or not KOKORO_AVAILABLE:
+            if not KOKORO_AVAILABLE:
+                print(f"Agent : {text} (TTS disabled)")
             return
         
         print(f"Agent : {text}")
@@ -32,7 +44,8 @@ class TTSModule:
             print(f"TTS failed. Response was {text}")
 
     def synthesize_to_file(self, text: str, output_path: str):
-        if not text.strip(): return
+        if not text.strip() or not KOKORO_AVAILABLE:
+            return
         logger.info(f"Synthesizing '{text}' to {output_path}")
         try:
             generator = self.pipeline(text=text, voice=self.voice)

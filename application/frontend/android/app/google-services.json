@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "305238383244",
+    "project_id": "healthsdfsdfsdfsdf",
+    "storage_bucket": "healthsdfsdfsdfsdf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305238383244:android:c3422a66d043b356a779a9",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305238383244-0otllvl9gn7l745mpmthnegi46mfv948.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGorF2uhtT8dD2wuBhFP1zghMjqHqujg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305238383244-0otllvl9gn7l745mpmthnegi46mfv948.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

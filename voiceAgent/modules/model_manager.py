@@ -32,11 +32,12 @@ class ModelManager:
     def load_small(self): #load fine-tuned small model (medical QA)
         if self.small_model is None:
             logger.info("Loading fine-tuned small model on CPU...")
-            self.small_tokenizer=AutoTokenizer.from_pretrained(SMALLMODEL)
-            self.small_model=AutoModelForCausalLM.from_pretrained(
-                SMALLMODEL,
+            self.small_tokenizer=AutoTokenizer.from_pretrained(BASE_SMALL)
+            base_model=AutoModelForCausalLM.from_pretrained(
+                BASE_SMALL,
                 torch_dtype=torch.float32,
-            ).to("cpu")
+            )
+            self.small_model = PeftModel.from_pretrained(base_model, SMALLMODEL).to("cpu")
             self.small_model.eval()
             logger.info("Fine-tuned small model ready (CPU).")
         return self.small_model, self.small_tokenizer
@@ -56,11 +57,12 @@ class ModelManager:
     def load_guardrail(self): #load fine-tuned guardrail classifier
         if self.guardrail_model is None:
             logger.info("Loading fine-tuned guardrail model on CPU...")
-            self.guardrail_tokenizer=AutoTokenizer.from_pretrained(GUARDRAILMODEL)
-            self.guardrail_model=AutoModelForCausalLM.from_pretrained(
-                GUARDRAILMODEL,
+            self.guardrail_tokenizer=AutoTokenizer.from_pretrained(BASE_SMALL)
+            base_model=AutoModelForCausalLM.from_pretrained(
+                BASE_SMALL,
                 torch_dtype=torch.float32,
-            ).to("cpu")
+            )
+            self.guardrail_model = PeftModel.from_pretrained(base_model, GUARDRAILMODEL).to("cpu")
             self.guardrail_model.eval()
             logger.info("Guardrail model ready (CPU).")
         return self.guardrail_model, self.guardrail_tokenizer
@@ -75,13 +77,13 @@ class ModelManager:
                 bnb_4bit_compute_dtype=torch.float16,
             )
             self.large_tokenizer=AutoTokenizer.from_pretrained(BASE_LARGE)
-            base=AutoModelForCausalLM.from_pretrained(
+            base_model=AutoModelForCausalLM.from_pretrained(
                 BASE_LARGE,
                 quantization_config=bnb,
                 device_map="auto",
                 low_cpu_mem_usage=True,
             )
-            self.large_model=PeftModel.from_pretrained(base, LARGEMODEL)
+            self.large_model = PeftModel.from_pretrained(base_model, LARGEMODEL)
             self.large_model.eval()
             logger.info("Large model ready (GPU, 4-bit + LoRA).")
         return self.large_model, self.large_tokenizer

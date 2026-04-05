@@ -37,7 +37,7 @@ class MainSLM:
             parts.append(memory_context)
         parts.append(f"User: {query}")
         user_prompt="\n\n".join(parts)
-        model,token=self.mm.load_large()
+        model,token=self.mm.load_small()
         response=self.mm.generate(
             model, token,
             system_prompt, user_prompt,

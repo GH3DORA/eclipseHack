@@ -1,4 +1,4 @@
-# IMPORTANT - RUN PARATELY
+python api.py# IMPORTANT - RUN PARATELY
 # pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 # pip install -r requirements.txt
 
@@ -19,19 +19,19 @@ tokenizers==0.22.2
 oumi==0.7
 
 # STT
-faster-whisper==1.2.1
-ctranslate2==4.7.1
+faster-whisper
+ctranslate2
 
 # TTS
-kokoro==0.9.4
-misaki==0.9.4
-espeakng-loader==0.2.4
-phonemizer-fork==3.3.2
+kokoro
+misaki
+espeakng-loader
+phonemizer-fork
 
 # Audio I/O
-pyaudio==0.2.14
-sounddevice==0.5.5
-soundfile==0.13.1
+pyaudio
+sounddevice
+soundfile
 
 # RAG
 faiss-cpu==1.11.0
