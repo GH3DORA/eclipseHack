@@ -132,3 +132,15 @@ What makes MediGuide incredibly capable is its localized role-based access routi
 3. **The Pipeline Reaction**: The backend unzips this payload. The `pipeline.py` intercepts the details and dynamically architects the core instruction:
    > *"You are an expert Surgeon assisting Akshat. Focus on surgical interventions, anatomical details, precise pre-operative and post-operative care..."*
 4. **The End Result**: The audio generation is entirely isolated, contextually strict, and effortlessly tailored to the authenticated clinical role without breaking strict medical persona guidelines!
+
+---
+
+## ⚠️ Future Improvements & Hackathon Constraints
+
+Due to time and internet limitations during the hackathon, several optimizations could not be fully realized:
+
+1. **Limited training duration**: The fine-tuned model was trained for only 100 steps due to time constraints. A full multi-epoch training run on the 50k-example dataset would significantly improve response quality, reduce hallucinated doctor names, and better align outputs with the system prompt.
+
+2. **llama-cpp-python for faster inference**: Low network bandwidth at the venue prevented successful installation of the `llama-cpp-python` CUDA wheel (~2GB). This library would have enabled GGUF-quantized inference, cutting generation latency by 2–3x and reducing VRAM usage, allowing the model to handle longer context windows and faster multi-turn conversations.
+
+3. **Dataset cleaning at training time**: The training data (`ruslanmv/ai-medical-chatbot`) contains doctor names, clinic greetings, and sign-offs baked into responses. While we added post-processing regex cleanup and a `clean_doctor_response()` function in the data pipeline, retraining on the fully cleaned dataset would eliminate these artifacts at the source rather than relying on runtime filtering.
