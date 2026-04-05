@@ -71,7 +71,7 @@ class InputBar extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'MediGuide is AI-powered and can make mistakes. Always consult a qualified doctor for medical decisions.',
             style: kDisclaimerStyle,
             textAlign: TextAlign.center,
