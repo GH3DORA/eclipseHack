@@ -10,12 +10,13 @@ The system is split into two primary autonomous layers:
 - **FastAPI Core (`api.py`)**: Hosts the `/chat/text` and `/chat/voice` endpoints. Handles audio ingestion, dynamic conversation UUID creation, and manages a local SQLite conversational memory system across asynchronous threads.
 - **Agent Pipeline (`pipeline.py`)**: The brain of the operation. A bespoke multi-step machine-learning pipeline:
   1. **STT (Speech-To-Text)**: Standardizes incoming `.m4a`/`.wav` blobs into text.
-  2. **Combined Classifier**: Evaluates the emotional tone of the clinician's prompt.
+  2. **Combined Classifier**: Evaluates the emotional tone of the user's prompt.
   3. **Query Rewriter**: Normalizes the prompt for highly accurate database retrieval operations.
-  4. **RAG Module (Retrieval-Augmented Generation)**: Leverages the user's exact discipline (Surgeon/Doctor/Nurse) to retrieve precisely relevant medical contexts from the localized KB.
-  5. **Main SLM Generation**: Weaves the retrieved medical context, the user's real name (from Flutter), and the user's role together into a single master instruction payload for the primary language model.
+  4. **RAG Module (Retrieval-Augmented Generation)**: Leverages the user's exact discipline (Surgeon/Doctor/Nurse) to retrieve precisely relevant medical contexts from the localized database.
+  5. **Main SLM Generation**: Weaves the retrieved medical context, the user's real name and ID (from Flutter), and the user's role together into a single master instruction payload for the primary language model.
   6. **TTS (Text-To-Speech)**: Synthesizes the generated intelligence into an audio file response (`.wav`).
   7. **Memory Manager**: Silently logs historical context linked directly to the `userId` to allow the assistant to remember what was previously discussed during the active session.
+  8. **Guardrails**: Ensure inputs to the Small Language Models and outputs from them are secure and do not break rules or policies.
 
 ### 2. Flutter Frontend (`/application/frontend`)
 - **UI/UX**: High-end, dark-mode medical interface with continuous voice-calling capability, wave-form animations, and slick chat bubbles.
