@@ -63,6 +63,8 @@ class ChatService {
     required String message,
     String? conversationId,
     String? role,
+    String? username,
+    String? userId,
   }) async {
     final res = await http.post(
       Uri.parse('$kBaseUrl/chat/text'),
@@ -71,6 +73,8 @@ class ChatService {
         'message': message,
         if (conversationId != null) 'conversation_id': conversationId,
         if (role != null) 'role_override': role,
+        if (username != null) 'username': username,
+        if (userId != null) 'user_id': userId,
       }),
     );
 
@@ -86,6 +90,8 @@ class ChatService {
     required String audioFilePath,
     String? conversationId,
     String? role,
+    String? username,
+    String? userId,
   }) async {
     final request =
         http.MultipartRequest('POST', Uri.parse('$kBaseUrl/chat/voice'));
@@ -107,6 +113,12 @@ class ChatService {
     }
     if (role != null) {
       request.fields['role_override'] = role;
+    }
+    if (username != null) {
+      request.fields['username'] = username;
+    }
+    if (userId != null) {
+      request.fields['user_id'] = userId;
     }
 
     final streamed = await request.send();

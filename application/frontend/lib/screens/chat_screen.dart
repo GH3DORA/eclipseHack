@@ -12,6 +12,7 @@ import '../widgets/top_bar.dart';
 import '../widgets/chat_drawer.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/call_overlay.dart';
+import '../services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/input_bar.dart';
@@ -50,6 +51,8 @@ class _ChatScreenState extends State<ChatScreen>
   // Role Settings
   String _activeRole = 'doctor';
   bool _isRoleMenuOpen = false;
+  String _username = 'Guest';
+  String _userId = 'local_user';
 
   @override
   void initState() {
@@ -70,17 +73,40 @@ class _ChatScreenState extends State<ChatScreen>
   }
 
   Future<void> _loadRolePreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        _activeRole = prefs.getString('user_role') ?? 'doctor';
-      });
+    final user = AuthService.currentUser;
+    if (user != null) {
+      _userId = user.uid;
+      _username = user.displayName ?? 'Guest';
+      final dbRole = await AuthService.getRole(user.uid);
+      if (dbRole != null && dbRole.isNotEmpty && mounted) {
+        setState(() {
+          _activeRole = dbRole;
+        });
+      }
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      if (mounted) {
+        setState(() {
+          _activeRole = prefs.getString('user_role') ?? 'doctor';
+        });
+      }
     }
   }
 
   Future<void> _changeRole(String newRole) async {
+    // 1. Sync strictly to Firebase Cloud
+    if (_userId != 'local_user') {
+      try {
+        await AuthService.setRole(_userId, newRole);
+      } catch (e) {
+        debugPrint('[ChatScreen] Error syncing role to cloud: $e');
+      }
+    }
+
+    // 2. Fallback local sync
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_role', newRole);
+    
     if (mounted) {
       setState(() {
         _activeRole = newRole;
@@ -307,6 +333,8 @@ class _ChatScreenState extends State<ChatScreen>
         message: text,
         conversationId: _currentConversationId,
         role: _activeRole,
+        username: _username,
+        userId: _userId,
       );
 
       if (!mounted) return;
@@ -360,6 +388,8 @@ class _ChatScreenState extends State<ChatScreen>
         audioFilePath: audioFilePath,
         conversationId: _currentConversationId,
         role: _activeRole,
+        username: _username,
+        userId: _userId,
       );
 
       if (!mounted) return;
