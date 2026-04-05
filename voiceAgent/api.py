@@ -227,6 +227,8 @@ class ChatRequest(BaseModel):
     message: str
     conversation_id: Optional[str] = None
     role_override: Optional[str] = None
+    username: Optional[str] = "local_user"
+    user_id: Optional[str] = "local_user"
 
 @app.post("/chat/text")
 async def chat_text(req: ChatRequest):
@@ -251,7 +253,7 @@ async def chat_text(req: ChatRequest):
             conversation_id = conv_id
 
         # Process text
-        response = await asyncio.to_thread(agent.process, message, "local_user", req.role_override)
+        response = await asyncio.to_thread(agent.process, message, req.user_id, req.username, req.role_override)
 
         # Save messages to DB
         conn = get_db()
@@ -308,10 +310,10 @@ async def chat_text(req: ChatRequest):
 
 
 @app.post("/chat/voice")
-async def chat_voice(audio: UploadFile = File(...), conversation_id: Optional[str] = Form(default=None), role_override: Optional[str] = Form(default=None)):
+async def chat_voice(audio: UploadFile = File(...), conversation_id: Optional[str] = Form(default=None), role_override: Optional[str] = Form(default=None), username: Optional[str] = Form(default="local_user"), user_id: Optional[str] = Form(default="local_user")):
     """Voice-to-Voice interaction. Accepts audio file, transcribes, processes, and returns audio."""
     agent = get_agent(role_override or "doctor")
-    logger.info(f"[API] Received voice file: {audio.filename} (conv: {conversation_id})")
+    logger.info(f"[API] Received voice file: {audio.filename} (conv: {conversation_id}, user: {username})")
     in_id = uuid.uuid4().hex
     input_path = f"audio_input/in_{in_id}.wav"
     try:
@@ -344,7 +346,7 @@ async def chat_voice(audio: UploadFile = File(...), conversation_id: Optional[st
             conversation_id = conv_id
 
         # 2. Process via Agent
-        response = await asyncio.to_thread(agent.process, text, "local_user", role_override)
+        response = await asyncio.to_thread(agent.process, text, user_id, username, role_override)
 
         # 3. Text to Speech
         resp_id = uuid.uuid4().hex

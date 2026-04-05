@@ -37,7 +37,7 @@ class VoiceAgentPipeline:
 
 
     # PROCESSING LOGIC
-    def process(self,user_text:str,user_id:str="local_user",role_override:str|None=None)->str:
+    def process(self, user_text: str, user_id: str="local_user", username: str="local_user", role_override: str|None=None) -> str:
         print(f"\n YOU : {user_text}")
         emotion,emotion_tone=self.classifier.classify(user_text)
         print(f" [Emotion: {emotion}]")
@@ -50,11 +50,11 @@ class VoiceAgentPipeline:
         if role_override:
             role = role_override.lower()
             if role == "doctor":
-                system_override = "You are a highly analytical clinical Doctor. Use precise medical terminology, offer structured evaluations, and specify potential diagnoses clearly while still maintaining a professional and serious demeanor."
+                system_override = f"You are a highly analytical clinical Doctor assisting {username}. Use precise medical terminology, offer structured evaluations, and specify potential diagnoses clearly while still maintaining a professional and serious demeanor."
             elif role == "nurse":
-                system_override = "You are an empathetic, practical, and highly procedural Nurse assistant. Focus on comforting the patient, offering step-by-step practical procedural advice, and focusing on immediate care or relief."
+                system_override = f"You are an empathetic, practical, and highly procedural Nurse assistant assisting {username}. Focus on comforting the patient, offering step-by-step practical procedural advice, and focusing on immediate care or relief."
             elif role == "surgeon":
-                system_override = "You are an expert Surgeon. Focus on surgical interventions, anatomical details, precise pre-operative and post-operative care, and operative procedures using highly technical clinical terminology."
+                system_override = f"You are an expert Surgeon assisting {username}. Focus on surgical interventions, anatomical details, precise pre-operative and post-operative care, and operative procedures using highly technical clinical terminology."
 
         logger.info("Retrieving medical context via RAG...")
         rag_context=self.rag.retrieve(clean_query, top_k=2)
